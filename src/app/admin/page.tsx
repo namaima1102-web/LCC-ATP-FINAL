@@ -86,7 +86,17 @@ export default async function AdminDashboardPage() {
           )}
         </section>
 
-        <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <Link
+            href="/admin/submissions"
+            className="rounded-2xl border-2 border-[var(--brand-orange)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">A1 · Hàng đợi duyệt tỉ số</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Duyệt, sửa rồi duyệt, từ chối bản gửi từ khách và xem cảnh báo xung đột.
+            </p>
+          </Link>
+
           <Link
             href="/admin/teams"
             className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
@@ -124,6 +134,16 @@ export default async function AdminDashboardPage() {
             <p className="text-sm font-extrabold">A11 · Tiến độ & Cảnh báo</p>
             <p className="mt-1 text-xs text-[var(--text-muted)]">
               Theo dõi tỷ lệ hoàn thành, danh sách VĐV còn nợ trận và mức chậm.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/forfeits"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">Đóng kỳ & Xử thua</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Cập nhật kết quả xử thua cho trận tồn cuối kỳ và khóa kỳ thi đấu.
             </p>
           </Link>
         </section>

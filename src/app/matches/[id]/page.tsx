@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PublicHeader } from "@/components/public/PublicHeader";
+import { SubmitScoreForm } from "@/components/public/SubmitScoreForm";
 import { getHandicapBreakdown } from "@/lib/domain/handicap";
-import { formatDateVN } from "@/lib/domain/progress";
+import { formatDateVN, getTodayVN } from "@/lib/domain/progress";
 import { loadPublicSeasonData } from "@/lib/supabase/public-season";
 
 export const dynamic = "force-dynamic";
@@ -181,11 +182,21 @@ export default async function MatchDetailPage({
           </div>
         </section>
 
-        {/* Khung chờ form gửi tỉ số (Milestone M5) */}
-        <section className="rounded-2xl border border-dashed border-[var(--border-subtle)] bg-[var(--bg-card)] p-5 text-sm text-[var(--text-muted)]">
-          Chức năng gửi tỉ số công khai & đính kèm ảnh bằng chứng cho trận này sẽ
-          được mở ở <strong>Milestone M5</strong>.
-        </section>
+        {/* Form gửi tỉ số công khai (M5) */}
+        {match.status === "scheduled" && (
+          <SubmitScoreForm
+            matchId={match.id}
+            sideANames={sideANames}
+            sideBNames={sideBNames}
+            setsToWin={match.setsToWin}
+            players={data.players.map((p) => ({
+              id: p.id,
+              fullName: p.fullName,
+              nickname: p.nickname,
+            }))}
+            defaultPlayedOn={getTodayVN()}
+          />
+        )}
       </main>
     </div>
   );

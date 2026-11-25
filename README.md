@@ -50,6 +50,8 @@ Website quản lý và hiển thị giải bóng bàn nội bộ CLB (16 tuyển
 2. `/admin/schedule` (A4): Chọn 4 kỳ (hoặc 3 kỳ), bấm **Sinh & Xem trước (132 trận)** → **Lưu lịch vào DB**, chỉnh ngày bắt đầu/kết thúc từng kỳ và bấm **Đăng lịch Kỳ N** để công khai.
 3. `/admin/matches` (A5): Lọc trận theo kỳ, đổi kỳ cho trận (bắt buộc nhập lý do nếu kỳ đã đăng) hoặc hủy/mở lại trận.
 4. `/admin/progress` (A11): Theo dõi tiến độ từng kỳ, cảnh báo trận tồn theo tuyển thủ và đội.
+5. `/admin/submissions` (A1): Duyệt / Sửa rồi duyệt / Từ chối (có lý do) bản gửi tỉ số từ khách; phát hiện xung đột.
+6. `/admin/forfeits`: Cập nhật kết quả xử thua từng trận cuối kỳ (`winner_a`, `winner_b`, `both`) và đóng kỳ.
 
 ## Trang công khai (Milestone M4)
 

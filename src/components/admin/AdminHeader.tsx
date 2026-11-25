@@ -8,10 +8,12 @@ import { LogoutButton } from "@/app/admin/LogoutButton";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Tổng quan" },
+  { href: "/admin/submissions", label: "Duyệt tỉ số" },
   { href: "/admin/teams", label: "Đội & Tuyển thủ" },
   { href: "/admin/schedule", label: "Sinh lịch & Kỳ" },
   { href: "/admin/matches", label: "Quản lý trận" },
   { href: "/admin/progress", label: "Tiến độ & Cảnh báo" },
+  { href: "/admin/forfeits", label: "Đóng kỳ & Xử thua" },
 ];
 
 export function AdminHeader({ adminLabel }: { adminLabel: string }) {
