@@ -12,6 +12,7 @@ const PUBLIC_NAV = [
   { href: "/players", label: "Tuyển thủ" },
   { href: "/calculator", label: "Máy tính chấp" },
   { href: "/tonight", label: "Tối nay ai đến" },
+  { href: "/history", label: "Lịch sử các mùa" },
   { href: "/rules", label: "Luật chấp & Quy định" },
 ];
 
