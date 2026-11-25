@@ -29,7 +29,7 @@ export default async function AdminDashboardPage() {
     <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-main)]">
       <AdminHeader adminLabel={admin.displayName || admin.email || "Admin"} />
 
-      <main className="mx-auto flex max-w-4xl flex-col gap-5 px-4 py-6">
+      <main className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8">
         <section className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-5">
           <div className="flex items-center justify-between gap-2">
             <h1 className="text-lg font-extrabold">Tổng quan mùa giải</h1>

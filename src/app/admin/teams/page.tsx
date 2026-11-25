@@ -13,7 +13,7 @@ export default async function AdminTeamsPage() {
   return (
     <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-main)]">
       <AdminHeader adminLabel={admin.displayName || admin.email || "Admin"} />
-      <main className="mx-auto max-w-4xl px-4 py-6">
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <h1 className="mb-4 text-xl font-extrabold">A3 · Đội & Tuyển thủ</h1>
         {ctx ? (
           <TeamsManager teams={ctx.teams} players={ctx.players} />

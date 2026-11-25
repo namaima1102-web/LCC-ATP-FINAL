@@ -18,7 +18,7 @@ export function AdminHeader({ adminLabel }: { adminLabel: string }) {
 
   return (
     <header className="sticky top-0 z-20 border-b border-[var(--border-subtle)] bg-[var(--bg-card)]/95 backdrop-blur-md">
-      <div className="mx-auto flex max-w-4xl items-center justify-between gap-2 px-4 py-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-2.5">
           <Image
             src="/logo-legend-chicks-cup.png"
@@ -44,7 +44,7 @@ export function AdminHeader({ adminLabel }: { adminLabel: string }) {
 
       <nav
         aria-label="Điều hướng Admin"
-        className="mx-auto flex max-w-4xl gap-1.5 overflow-x-auto px-4 pb-2.5"
+        className="mx-auto flex max-w-7xl gap-1.5 overflow-x-auto px-4 pb-2.5 sm:px-6 lg:px-8"
       >
         {NAV_ITEMS.map((item) => {
           const active = pathname === item.href;

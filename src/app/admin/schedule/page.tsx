@@ -14,7 +14,7 @@ export default async function AdminSchedulePage() {
     return (
       <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-main)]">
         <AdminHeader adminLabel={admin.displayName || admin.email || "Admin"} />
-        <main className="mx-auto max-w-4xl px-4 py-6">
+        <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <p className="text-sm text-[var(--text-muted)]">
             Chưa có dữ liệu mùa giải. Hãy chạy <code>npm run seed</code>.
           </p>

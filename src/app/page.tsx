@@ -7,7 +7,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-main)]">
       {/* Thanh đầu trang */}
       <header className="sticky top-0 z-20 border-b border-[var(--border-subtle)] bg-[var(--bg-card)]/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-2.5">
             <Image
               src="/logo-legend-chicks-cup.png"
@@ -31,7 +31,7 @@ export default function HomePage() {
       </header>
 
       {/* Nội dung trang chủ trống M0 */}
-      <main className="mx-auto flex max-w-3xl flex-col gap-5 px-4 py-6">
+      <main className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8">
         <section className="relative overflow-hidden rounded-2xl border-2 border-[var(--brand-purple)] bg-[var(--bg-card)] p-5 shadow-sm sm:p-7">
           <div className="flex flex-col items-center text-center">
             <div className="mb-4 rounded-2xl bg-[var(--brand-navy-deep)]/5 p-3 dark:bg-white/5">
