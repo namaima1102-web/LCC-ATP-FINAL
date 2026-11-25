@@ -17,6 +17,8 @@ const NAV_ITEMS = [
   { href: "/admin/handicap", label: "Bảng chấp" },
   { href: "/admin/ratings", label: "Điểm cuối mùa" },
   { href: "/admin/settings", label: "Cấu hình" },
+  { href: "/admin/audit", label: "Nhật ký" },
+  { href: "/admin/data", label: "Xuất Excel" },
 ];
 
 export function AdminHeader({ adminLabel }: { adminLabel: string }) {

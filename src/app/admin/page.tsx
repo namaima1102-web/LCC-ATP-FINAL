@@ -176,6 +176,26 @@ export default async function AdminDashboardPage() {
               Chỉnh ngưỡng tăng/giảm điểm, cảnh báo trận tồn, số bàn và chống spam.
             </p>
           </Link>
+
+          <Link
+            href="/admin/audit"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">A9 · Nhật ký hệ thống</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Truy vết ai đã sửa gì, khi nào và lý do thay đổi.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/data"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">A10 · Xuất Excel (.xlsx)</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Tải file Excel 4 sheet (Tuyển thủ, Lịch, Kết quả, Bảng xếp hạng).
+            </p>
+          </Link>
         </section>
       </main>
     </div>

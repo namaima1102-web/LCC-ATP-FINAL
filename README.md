@@ -53,6 +53,7 @@ Website quản lý và hiển thị giải bóng bàn nội bộ CLB (16 tuyển
 5. `/admin/submissions` (A1): Duyệt / Sửa rồi duyệt / Từ chối (có lý do) bản gửi tỉ số từ khách; phát hiện xung đột.
 6. `/admin/forfeits`: Cập nhật kết quả xử thua từng trận cuối kỳ (`winner_a`, `winner_b`, `both`) và đóng kỳ.
 7. `/admin/handicap` (A6), `/admin/ratings` (A7), `/admin/settings` (A8): Sửa bảng chấp, chốt điểm cuối mùa và cấu hình toàn bộ luật giải không cần sửa code.
+8. `/admin/audit` (A9) & `/admin/data` (A10): Xem nhật ký truy vết mọi thao tác và tải file Excel (`.xlsx`) gồm 4 sheet sao lưu định kỳ.
 
 ## Trang công khai (Milestone M4 & M6)
 
