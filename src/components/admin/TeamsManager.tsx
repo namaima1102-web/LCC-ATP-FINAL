@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TeamItem {
   id: string;
@@ -31,6 +31,26 @@ export function TeamsManager({
   const [players, setPlayers] = useState(initialPlayers);
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTeams(initialTeams);
+  }, [initialTeams]);
+
+  useEffect(() => {
+    setPlayers(initialPlayers);
+  }, [initialPlayers]);
+
+  const dirtyPlayers = players.filter((p) => {
+    const orig = initialPlayers.find((o) => o.id === p.id);
+    if (!orig) return false;
+    return (
+      orig.fullName !== p.fullName ||
+      (orig.nickname ?? "") !== (p.nickname ?? "") ||
+      orig.teamId !== p.teamId ||
+      orig.ratingStart !== p.ratingStart ||
+      orig.isProvisional !== p.isProvisional
+    );
+  });
 
   // Form thêm tuyển thủ mới
   const [newName, setNewName] = useState("");
@@ -91,6 +111,43 @@ export function TeamsManager({
       router.refresh();
     } catch (e) {
       setStatusMsg(e instanceof Error ? e.message : "Lỗi cập nhật tuyển thủ.");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const saveAllDirtyPlayers = async () => {
+    if (dirtyPlayers.length === 0) return;
+    setBusyId("save-all");
+    setStatusMsg(null);
+    let totalRecalc = 0;
+    try {
+      for (const player of dirtyPlayers) {
+        const res = await fetch("/api/admin/teams", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "player",
+            playerId: player.id,
+            fullName: player.fullName,
+            nickname: player.nickname,
+            teamId: player.teamId,
+            ratingStart: player.ratingStart,
+            isProvisional: player.isProvisional,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || `Lỗi lưu ${player.fullName}`);
+        totalRecalc += data.recalculatedCount ?? 0;
+      }
+      const extra =
+        totalRecalc > 0
+          ? ` (đã tự động tính lại mã chấp cho ${totalRecalc} lượt trận chưa đấu)`
+          : "";
+      setStatusMsg(`Đã lưu ${dirtyPlayers.length} tuyển thủ${extra}.`);
+      router.refresh();
+    } catch (e) {
+      setStatusMsg(e instanceof Error ? e.message : "Lỗi lưu hàng loạt.");
     } finally {
       setBusyId(null);
     }
@@ -182,18 +239,41 @@ export function TeamsManager({
 
       {/* Danh sách tuyển thủ */}
       <section className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:p-5">
-        <h2 className="text-base font-extrabold">
-          2. Tuyển thủ & Điểm trình ({players.length})
-        </h2>
-        <p className="mt-1 text-xs text-[var(--text-muted)]">
-          Khi sửa điểm trình, hệ thống tự tính lại mã chấp cho các trận chưa đấu.
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 className="text-base font-extrabold">
+              2. Tuyển thủ & Điểm trình ({players.length})
+            </h2>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Khi sửa điểm trình, nhớ bấm <strong>Lưu</strong> (hoặc{" "}
+              <strong>Lưu tất cả</strong>) — hệ thống sẽ tự tính lại mã chấp các trận chưa đấu.
+            </p>
+          </div>
+          {dirtyPlayers.length > 0 && (
+            <button
+              type="button"
+              disabled={busyId === "save-all"}
+              onClick={saveAllDirtyPlayers}
+              className="h-9 rounded-xl bg-[var(--brand-orange)] px-4 text-xs font-bold text-white disabled:opacity-50"
+            >
+              {busyId === "save-all"
+                ? "Đang lưu..."
+                : `Lưu ${dirtyPlayers.length} thay đổi chưa lưu`}
+            </button>
+          )}
+        </div>
 
         <div className="mt-4 flex flex-col gap-3">
-          {players.map((p) => (
+          {players.map((p) => {
+            const isDirty = dirtyPlayers.some((d) => d.id === p.id);
+            return (
             <div
               key={p.id}
-              className="flex flex-col gap-2.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-page)] p-3 sm:flex-row sm:items-center"
+              className={`flex flex-col gap-2.5 rounded-xl border p-3 sm:flex-row sm:items-center ${
+                isDirty
+                  ? "border-[var(--brand-orange)] bg-amber-50/40 dark:bg-amber-950/20"
+                  : "border-[var(--border-subtle)] bg-[var(--bg-page)]"
+              }`}
             >
               <div className="flex flex-1 gap-2">
                 <input
@@ -283,13 +363,16 @@ export function TeamsManager({
                   type="button"
                   disabled={busyId === p.id}
                   onClick={() => savePlayer(p)}
-                  className="h-9 rounded-lg bg-[var(--brand-purple)] px-3 text-xs font-bold text-white disabled:opacity-50"
+                  className={`h-9 rounded-lg px-3 text-xs font-bold text-white disabled:opacity-50 ${
+                    isDirty ? "bg-[var(--brand-orange)]" : "bg-[var(--brand-purple)]"
+                  }`}
                 >
-                  Lưu
+                  {isDirty ? "Lưu*" : "Lưu"}
                 </button>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
