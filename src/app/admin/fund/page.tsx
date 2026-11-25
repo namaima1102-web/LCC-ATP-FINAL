@@ -3,7 +3,9 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { FundManager } from "@/components/admin/FundManager";
 import {
   DEFAULT_FUND_FEE_PER_SEASON_K,
+  DEFAULT_OPENING_BALANCE_K,
   DEFAULT_SEASON5_FUND_RECORDS,
+  type FundExpense,
   type FundRecord,
 } from "@/lib/domain/fund";
 import { loadCurrentSeasonContext } from "@/lib/supabase/admin-season";
@@ -19,6 +21,8 @@ export default async function AdminFundPage() {
   const rawSettings = (ctx?.season.settings ?? {}) as unknown as {
     fund_records?: FundRecord[];
     fund_fee_per_season?: number;
+    fund_opening_balance_k?: number;
+    fund_expenses?: FundExpense[];
   };
 
   const records =
@@ -26,15 +30,25 @@ export default async function AdminFundPage() {
       ? rawSettings.fund_records
       : DEFAULT_SEASON5_FUND_RECORDS;
   const feeK = rawSettings.fund_fee_per_season ?? DEFAULT_FUND_FEE_PER_SEASON_K;
+  const openingK =
+    rawSettings.fund_opening_balance_k ?? DEFAULT_OPENING_BALANCE_K;
+  const expenses = Array.isArray(rawSettings.fund_expenses)
+    ? rawSettings.fund_expenses
+    : [];
 
   return (
     <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-main)]">
       <AdminHeader adminLabel={admin.displayName || admin.email || "Admin"} />
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <h1 className="mb-4 text-xl font-extrabold">
-          Quản lý đóng quỹ CLB ({feeK}k/mùa)
+          Quản lý đóng quỹ & Thu chi CLB ({feeK}k/mùa)
         </h1>
-        <FundManager initialRecords={records} feePerSeasonK={feeK} />
+        <FundManager
+          initialRecords={records}
+          feePerSeasonK={feeK}
+          initialOpeningBalanceK={openingK}
+          initialExpenses={expenses}
+        />
       </main>
     </div>
   );

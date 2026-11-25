@@ -1,30 +1,35 @@
 import { describe, expect, it } from "vitest";
 import {
   computeFundSummary,
+  DEFAULT_OPENING_BALANCE_K,
   DEFAULT_SEASON5_FUND_RECORDS,
 } from "../../src/lib/domain/fund";
 
-describe("Bảng đóng quỹ CLB (50k/mùa)", () => {
-  it("tính đúng Còn dư / Cần đóng cho Thanh, Sinh, Thảo, Tân, Vĩnh", () => {
-    const summary = computeFundSummary(DEFAULT_SEASON5_FUND_RECORDS, 50);
+describe("Bảng đóng quỹ & Thu chi CLB (50k/mùa)", () => {
+  it("tính đúng Còn dư / Cần đóng và số dư quỹ hiện tại (1145 + 250 - chi)", () => {
+    const summary = computeFundSummary(
+      DEFAULT_SEASON5_FUND_RECORDS,
+      50,
+      DEFAULT_OPENING_BALANCE_K,
+      [{ id: "e1", date: "2026-11-25", description: "Mua bóng", amountK: 100 }]
+    );
     const byName = new Map(summary.rows.map((r) => [r.fullName, r]));
 
     // Thanh: đã đóng 200k, 4 mùa trước + M5 = 5 mùa (250k) -> cần đóng 50k
     expect(byName.get("Thanh")?.dueK).toBe(50);
-    expect(byName.get("Thanh")?.surplusK).toBe(0);
 
-    // Sinh: đã đóng 250k, 4 mùa trước + M5 = 5 mùa (250k) -> đủ 0k
-    expect(byName.get("Sinh")?.dueK).toBe(0);
-    expect(byName.get("Sinh")?.surplusK).toBe(0);
+    // Dương: 200k + 50k M5 = 250k -> đủ 0k
+    expect(byName.get("Dương")?.dueK).toBe(0);
 
-    // Thảo: đã đóng 150k, 5 mùa (250k) -> cần đóng 100k
-    expect(byName.get("Thảo")?.dueK).toBe(100);
+    // Tân: mới M5, đóng 100k -> dư 50k
+    expect(byName.get("Tân")?.surplusK).toBe(50);
 
-    // Tân: mới M5, đóng 0k -> cần đóng 50k
-    expect(byName.get("Tân")?.dueK).toBe(50);
+    // Nam Gai: 100k + 100k M5 = 200k cho 3 mùa (150k) -> dư 50k
+    expect(byName.get("Nam Gai")?.surplusK).toBe(50);
 
-    // Vĩnh: nghỉ M5, đóng 250k cho 2 mùa (100k) -> dư 150k
-    expect(byName.get("Vĩnh")?.surplusK).toBe(150);
-    expect(byName.get("Vĩnh")?.dueK).toBe(0);
+    // Thu chi: 1145 + 250 (Dương 50 + Tân 100 + Nam Gai 100) - 100 = 1295k
+    expect(summary.m5IncomeK).toBe(250);
+    expect(summary.totalExpensesK).toBe(100);
+    expect(summary.currentBalanceK).toBe(1295);
   });
 });

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { writeAuditLog } from "@/lib/audit";
-import type { FundRecord } from "@/lib/domain/fund";
+import type { FundExpense, FundRecord } from "@/lib/domain/fund";
 import { loadCurrentSeasonContext } from "@/lib/supabase/admin-season";
 import { getCurrentAdmin } from "@/lib/supabase/auth";
 import { createAdminClient } from "@/lib/supabase/server";
@@ -14,6 +14,8 @@ export async function PUT(request: Request) {
   const body = (await request.json()) as {
     records: FundRecord[];
     feePerSeasonK?: number;
+    openingBalanceK?: number;
+    expenses?: FundExpense[];
   };
 
   if (!Array.isArray(body.records)) {
@@ -29,6 +31,8 @@ export async function PUT(request: Request) {
     ...ctx.season.settings,
     fund_records: body.records,
     fund_fee_per_season: body.feePerSeasonK ?? 50,
+    fund_opening_balance_k: body.openingBalanceK ?? 1145,
+    fund_expenses: body.expenses ?? [],
   };
 
   const db = createAdminClient();
@@ -46,7 +50,11 @@ export async function PUT(request: Request) {
     action: "update_fund_records",
     entity: "seasons",
     entityId: ctx.season.id,
-    after: { count: body.records.length, feePerSeasonK: nextSettings.fund_fee_per_season },
+    after: {
+      count: body.records.length,
+      openingBalanceK: nextSettings.fund_opening_balance_k,
+      expensesCount: nextSettings.fund_expenses.length,
+    },
   });
 
   return NextResponse.json({ ok: true });
