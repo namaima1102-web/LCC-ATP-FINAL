@@ -34,7 +34,7 @@
   ],
   "handicap_rules": [
     { "diff": 0,   "singles": "0-0-0", "doubles": "0-0-0" },
-    { "diff": 0.5, "singles": "0-1-0", "doubles": "0-1-0" },
+    { "diff": 0.5, "singles": "0-2-0", "doubles": "0-2-0" },
     { "diff": 1,   "singles": "0-2-0", "doubles": "0-2-0" },
     { "diff": 1.5, "singles": "2-0-2", "doubles": "2-0-2" },
     { "diff": 2,   "singles": "2-2-2", "doubles": "2-2-2" },

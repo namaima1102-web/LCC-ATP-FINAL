@@ -31,9 +31,9 @@ describe("PRD 13.1: Ca kiểm thử mã chấp (AC9)", () => {
     expect(res).toEqual({ diff: 0, code: "0-0-0", giver: null });
   });
 
-  it("Kiên+Vinh (16) vs Sinh+Phương (15) đôi -> chênh 0.5 -> 0-1-0", () => {
+  it("Kiên+Vinh (16) vs Sinh+Phương (15) đôi -> chênh 0.5 -> 0-2-0 (luật Mùa 5)", () => {
     const res = calculateHandicap("doubles", [9, 7], [8, 7], rules, DEFAULT_SEASON_SETTINGS);
-    expect(res).toEqual({ diff: 0.5, code: "0-1-0", giver: "a" });
+    expect(res).toEqual({ diff: 0.5, code: "0-2-0", giver: "a" });
   });
 
   it("Nam Gai+Sinh (20) vs Dương+Hùng (17) đôi -> chênh 1.5 -> 2-0-2", () => {
