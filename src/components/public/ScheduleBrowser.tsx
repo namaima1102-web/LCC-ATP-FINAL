@@ -108,12 +108,12 @@ export function ScheduleBrowser({
   return (
     <div className="flex flex-col gap-4">
       {/* Bộ lọc */}
-      <div className="grid gap-2.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-2.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3.5 sm:p-4 lg:grid-cols-5">
         <select
           aria-label="Lọc theo kỳ"
           value={periodId}
           onChange={(e) => setPeriodId(e.target.value)}
-          className="h-10 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-page)] px-3 text-xs font-semibold"
+          className="col-span-2 h-10 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-page)] px-3 text-xs font-semibold lg:col-span-1"
         >
           <option value="all">Tất cả kỳ đã đăng</option>
           {periods.map((p) => (

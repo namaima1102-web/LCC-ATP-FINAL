@@ -27,8 +27,7 @@ const themeInitScript = `
 (function() {
   try {
     var saved = localStorage.getItem('lcc-theme');
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (saved === 'dark' || (!saved && prefersDark)) {
+    if (saved !== 'light') {
       document.documentElement.classList.add('dark');
     }
   } catch (e) {}
