@@ -102,6 +102,14 @@ export async function POST(request: Request) {
     }
   }
 
+  // Xóa các kỳ dư > periodsCount nếu chưa dùng
+  await db
+    .from("periods")
+    .delete()
+    .eq("season_id", ctx.season.id)
+    .gt("period_no", periodsCount)
+    .eq("status", "draft");
+
   // Lưu 6 fixtures
   const fixtureIdByIndex = new Map<number, string>();
   const { data: insertedFixtures, error: fErr } = await db

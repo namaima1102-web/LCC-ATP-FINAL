@@ -27,7 +27,7 @@ const defaultSettings = {
   doubles_diff_divisor: 2,
   handicap_pattern: "alternate",
   handicap_overflow_mode: "clamp_max",
-  periods_count: 4,
+  periods_count: 3,
   singles_mode: "all",
   balance_opponents: true,
   balance_handicap: false,
@@ -153,9 +153,9 @@ async function run() {
     throw new Error(`Lỗi upsert handicap_rules: ${hcErr.message}`);
   }
 
-  // 5. Tạo 4 kỳ mặc định (2 tuần/kỳ, trạng thái draft) nếu chưa có
+  // 5. Tạo 3 kỳ mặc định (2 tuần/kỳ = 6 tuần, trạng thái draft)
   const baseDate = new Date("2026-11-30T00:00:00Z");
-  const periodRows = Array.from({ length: 4 }, (_, idx) => {
+  const periodRows = Array.from({ length: 3 }, (_, idx) => {
     const start = new Date(baseDate);
     start.setUTCDate(baseDate.getUTCDate() + idx * 14);
     const end = new Date(start);
@@ -178,8 +178,16 @@ async function run() {
     throw new Error(`Lỗi upsert periods: ${periodErr.message}`);
   }
 
+  // Xóa kỳ dư (> 3) nếu đang draft và chưa có trận nào
+  await supabase
+    .from("periods")
+    .delete()
+    .eq("season_id", seasonId)
+    .gt("period_no", 3)
+    .eq("status", "draft");
+
   console.log(
-    `Hoàn tất seed ${seed.season.code}: ${seed.teams.length} đội, ${seed.players.length} tuyển thủ, ${seed.handicap_rules.length} mức chấp, 4 kỳ.`
+    `Hoàn tất seed ${seed.season.code}: ${seed.teams.length} đội, ${seed.players.length} tuyển thủ, ${seed.handicap_rules.length} mức chấp, 3 kỳ.`
   );
 }
 

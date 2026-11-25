@@ -53,6 +53,6 @@ Website quản lý và hiển thị giải bóng bàn nội bộ CLB (16 tuyển
 ## Mặc định tạm đang dùng (theo Phần 15 của PRD)
 
 - **Thể thức:** Đơn và đôi đều 5 set (thắng 3 set). Mã chấp `x-y-z` áp dụng lẻ dùng số đầu, chẵn dùng số giữa.
-- **Lịch:** 4 kỳ 2 tuần (8 tuần), tổng 132 trận (96 đơn + 36 đôi), không lượt về.
+- **Lịch:** 3 kỳ (vòng) × 2 tuần = 6 tuần, tổng 132 trận (96 đơn + 36 đôi), mỗi kỳ 44 trận (mỗi người 7 trận/kỳ, tổng 21 trận), không lượt về.
 - **Quyền riêng tư (Q9):** Trang web đặt `noindex, nofollow` để chỉ chia sẻ nội bộ qua link.
 - **Bảo mật (AC8):** Khách không đọc/ghi trực tiếp bảng `score_submissions`; mọi API `/api/admin/*` yêu cầu đăng nhập và có bản ghi trong bảng `admins`.

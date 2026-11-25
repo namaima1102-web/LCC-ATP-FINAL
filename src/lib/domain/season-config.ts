@@ -42,7 +42,7 @@ export const DEFAULT_SEASON_SETTINGS: SeasonSettings = {
   doubles_diff_divisor: 2,
   handicap_pattern: "alternate",
   handicap_overflow_mode: "clamp_max",
-  periods_count: 4,
+  periods_count: 3,
   singles_mode: "all",
   balance_opponents: true,
   balance_handicap: false,

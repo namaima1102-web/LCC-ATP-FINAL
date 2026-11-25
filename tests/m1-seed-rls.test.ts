@@ -22,10 +22,10 @@ describe("M1 AC1: Kiểm tra dữ liệu seed Mùa 5 & cấu hình mặc định
     expect(provisionalNames).toEqual(["Khanh", "Tân"]);
   });
 
-  it("cấu hình mặc định khớp PRD (5 set thắng 3, 4 kỳ, cảnh báo 3/1/0 ngày, noindex)", () => {
+  it("cấu hình mặc định khớp PRD (5 set thắng 3, 3 kỳ 6 tuần, cảnh báo 3/1/0 ngày, noindex)", () => {
     expect(DEFAULT_SEASON_SETTINGS.singles_sets_to_win).toBe(3);
     expect(DEFAULT_SEASON_SETTINGS.doubles_sets_to_win).toBe(3);
-    expect(DEFAULT_SEASON_SETTINGS.periods_count).toBe(4);
+    expect(DEFAULT_SEASON_SETTINGS.periods_count).toBe(3);
     expect(DEFAULT_SEASON_SETTINGS.alert_days_before).toEqual([3, 1, 0]);
     expect(DEFAULT_SEASON_SETTINGS.noindex).toBe(true);
   });
