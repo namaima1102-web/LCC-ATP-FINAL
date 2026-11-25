@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { href: "/admin/teams", label: "Đội & Tuyển thủ" },
   { href: "/admin/schedule", label: "Sinh lịch & Kỳ" },
   { href: "/admin/matches", label: "Quản lý trận" },
+  { href: "/admin/progress", label: "Tiến độ & Cảnh báo" },
 ];
 
 export function AdminHeader({ adminLabel }: { adminLabel: string }) {

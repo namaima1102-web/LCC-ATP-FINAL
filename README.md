@@ -49,6 +49,15 @@ Website quản lý và hiển thị giải bóng bàn nội bộ CLB (16 tuyển
 1. `/admin/teams` (A3): Sửa tên đội, màu đội, điểm trình, đánh dấu `Điểm tạm` (khi đổi điểm, mã chấp các trận chưa đấu tự động tính lại).
 2. `/admin/schedule` (A4): Chọn 4 kỳ (hoặc 3 kỳ), bấm **Sinh & Xem trước (132 trận)** → **Lưu lịch vào DB**, chỉnh ngày bắt đầu/kết thúc từng kỳ và bấm **Đăng lịch Kỳ N** để công khai.
 3. `/admin/matches` (A5): Lọc trận theo kỳ, đổi kỳ cho trận (bắt buộc nhập lý do nếu kỳ đã đăng) hoặc hủy/mở lại trận.
+4. `/admin/progress` (A11): Theo dõi tiến độ từng kỳ, cảnh báo trận tồn theo tuyển thủ và đội.
+
+## Trang công khai (Milestone M4)
+
+- `/` (W1): Trang chủ, dải cảnh báo trận tồn, xếp hạng 4 đội, kết quả mới nhất.
+- `/schedule` (W2): Lịch & kết quả các kỳ đã đăng, lọc theo kỳ/đội/người, xem mã chấp từng set.
+- `/matches/[id]` (W3): Chi tiết trận đấu và bảng chấp Set 1–5.
+- `/players` & `/players/[id]` (W4): Hồ sơ cá nhân, trận còn nợ trong kỳ, mã chấp với từng đối thủ, điểm dự kiến.
+- `/standings` (W5): Bảng xếp hạng Đội, Cá nhân, Cặp đôi.
 
 ## Mặc định tạm đang dùng (theo Phần 15 của PRD)
 

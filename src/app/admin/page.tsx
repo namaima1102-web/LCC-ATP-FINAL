@@ -86,7 +86,7 @@ export default async function AdminDashboardPage() {
           )}
         </section>
 
-        <section className="grid gap-3 sm:grid-cols-3">
+        <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Link
             href="/admin/teams"
             className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
@@ -103,7 +103,7 @@ export default async function AdminDashboardPage() {
           >
             <p className="text-sm font-extrabold">A4 · Bộ sinh lịch & Kỳ</p>
             <p className="mt-1 text-xs text-[var(--text-muted)]">
-              Sinh 132 trận, chia 4 kỳ hoặc 3 kỳ, kiểm tra R1–R5 & đăng từng kỳ.
+              Sinh 132 trận, chia 3 kỳ hoặc 4 kỳ, kiểm tra R1–R5 & đăng từng kỳ.
             </p>
           </Link>
 
@@ -114,6 +114,16 @@ export default async function AdminDashboardPage() {
             <p className="text-sm font-extrabold">A5 · Quản lý trận</p>
             <p className="mt-1 text-xs text-[var(--text-muted)]">
               Lọc trận theo kỳ, đổi kỳ cho trận (kèm lý do) hoặc hủy trận.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/progress"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">A11 · Tiến độ & Cảnh báo</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Theo dõi tỷ lệ hoàn thành, danh sách VĐV còn nợ trận và mức chậm.
             </p>
           </Link>
         </section>
