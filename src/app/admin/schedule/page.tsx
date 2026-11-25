@@ -46,6 +46,11 @@ export default async function AdminSchedulePage() {
         <h1 className="mb-4 text-xl font-extrabold">A4 · Bộ sinh lịch & Đăng kỳ</h1>
         <ScheduleManager
           periods={periodsWithCount}
+          players={ctx.players.map((p) => ({
+            id: p.id,
+            fullName: p.fullName,
+            teamId: p.teamId,
+          }))}
           existingMatchCount={matchRows?.length ?? 0}
           defaultPeriodsCount={ctx.season.settings.periods_count}
         />

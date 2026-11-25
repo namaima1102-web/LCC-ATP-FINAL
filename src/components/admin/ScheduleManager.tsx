@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 interface PeriodItem {
   id: string;
@@ -13,6 +13,22 @@ interface PeriodItem {
   matchCount: number;
 }
 
+interface PlayerRef {
+  id: string;
+  fullName: string;
+  teamId: string;
+}
+
+interface PreviewMatchItem {
+  fixtureIndex: number;
+  kind: "singles" | "doubles";
+  periodNo: number;
+  sideAPlayerIds: string[];
+  sideBPlayerIds: string[];
+  handicapCode: string;
+  handicapGiver: "a" | "b" | null;
+}
+
 interface PreviewSummary {
   periodsCount: number;
   totalMatches: number;
@@ -21,14 +37,17 @@ interface PreviewSummary {
   hardIssues: Array<{ rule: string; message: string }>;
   warnings: Array<{ rule: string; message: string }>;
   byPeriod: Array<{ periodNo: number; count: number }>;
+  matches: PreviewMatchItem[];
 }
 
 export function ScheduleManager({
   periods: initialPeriods,
+  players,
   existingMatchCount,
   defaultPeriodsCount,
 }: {
   periods: PeriodItem[];
+  players: PlayerRef[];
   existingMatchCount: number;
   defaultPeriodsCount: number;
 }) {
@@ -38,8 +57,15 @@ export function ScheduleManager({
   const [balanceOpponents, setBalanceOpponents] = useState(true);
   const [balanceHandicap, setBalanceHandicap] = useState(false);
   const [preview, setPreview] = useState<PreviewSummary | null>(null);
+  const [previewPeriodFilter, setPreviewPeriodFilter] = useState<number>(1);
+  const [previewKindFilter, setPreviewKindFilter] = useState<string>("all");
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  const playerMap = useMemo(
+    () => new Map(players.map((p) => [p.id, p.fullName])),
+    [players]
+  );
 
   const handlePreview = async () => {
     setBusy(true);
@@ -57,7 +83,7 @@ export function ScheduleManager({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Lỗi xem trước lịch");
 
-      const matches = data.matches as Array<{ kind: string; periodNo: number }>;
+      const matches = data.matches as PreviewMatchItem[];
       const issues = data.issues as Array<{
         rule: string;
         severity: string;
@@ -69,6 +95,7 @@ export function ScheduleManager({
         count: matches.filter((m) => m.periodNo === i + 1).length,
       }));
 
+      setPreviewPeriodFilter(1);
       setPreview({
         periodsCount,
         totalMatches: matches.length,
@@ -77,6 +104,7 @@ export function ScheduleManager({
         hardIssues: issues.filter((i) => i.severity === "hard"),
         warnings: issues.filter((i) => i.severity === "warning"),
         byPeriod,
+        matches,
       });
     } catch (e) {
       setStatusMsg(e instanceof Error ? e.message : "Lỗi xem trước lịch.");
@@ -158,6 +186,16 @@ export function ScheduleManager({
     }
   };
 
+  const previewMatchesFiltered = useMemo(() => {
+    if (!preview) return [];
+    return preview.matches.filter((m) => {
+      if (m.periodNo !== previewPeriodFilter) return false;
+      if (previewKindFilter !== "all" && m.kind !== previewKindFilter)
+        return false;
+      return true;
+    });
+  }, [preview, previewPeriodFilter, previewKindFilter]);
+
   return (
     <div className="flex flex-col gap-6">
       {statusMsg && (
@@ -181,8 +219,8 @@ export function ScheduleManager({
               onChange={(e) => setPeriodsCount(Number(e.target.value))}
               className="h-9 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-page)] px-2.5 text-sm font-semibold"
             >
-              <option value={4}>4 kỳ (8 tuần · 33 trận/kỳ)</option>
               <option value={3}>3 kỳ (6 tuần · 44 trận/kỳ)</option>
+              <option value={4}>4 kỳ (8 tuần · 33 trận/kỳ)</option>
             </select>
           </label>
 
@@ -212,7 +250,7 @@ export function ScheduleManager({
             onClick={handlePreview}
             className="h-10 rounded-xl border border-[var(--brand-purple)] px-4 text-xs font-bold text-[var(--brand-purple)] dark:text-[var(--brand-yellow)] disabled:opacity-50"
           >
-            Sinh & Xem trước (132 trận)
+            {busy ? "Đang xử lý..." : "Sinh & Xem trước (132 trận)"}
           </button>
 
           <button
@@ -226,32 +264,89 @@ export function ScheduleManager({
         </div>
 
         {preview && (
-          <div className="mt-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-page)] p-4 text-sm">
-            <p className="font-bold">
-              Kết quả xem trước: {preview.totalMatches} trận ({preview.singlesCount} đơn +{" "}
-              {preview.doublesCount} đôi)
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {preview.byPeriod.map((p) => (
-                <span
-                  key={p.periodNo}
-                  className="rounded-lg bg-[var(--bg-card)] px-2.5 py-1 text-xs font-semibold"
+          <div className="mt-5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-page)] p-4 text-sm">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="font-bold">
+                Kết quả xem trước: {preview.totalMatches} trận ({preview.singlesCount} đơn +{" "}
+                {preview.doublesCount} đôi)
+              </p>
+              <p className="text-xs">
+                Lỗi cứng (R1–R4):{" "}
+                <strong
+                  className={
+                    preview.hardIssues.length === 0 ? "text-emerald-600" : "text-red-600"
+                  }
                 >
-                  Kỳ {p.periodNo}: {p.count} trận
-                </span>
-              ))}
+                  {preview.hardIssues.length}
+                </strong>{" "}
+                · Cảnh báo (R5/R8): <strong>{preview.warnings.length}</strong>
+              </p>
             </div>
-            <p className="mt-2 text-xs">
-              Lỗi cứng (R1–R4):{" "}
-              <strong
-                className={
-                  preview.hardIssues.length === 0 ? "text-emerald-600" : "text-red-600"
-                }
+
+            {/* Bộ lọc xem trước theo kỳ & loại trận */}
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              {preview.byPeriod.map((p) => (
+                <button
+                  key={p.periodNo}
+                  type="button"
+                  onClick={() => setPreviewPeriodFilter(p.periodNo)}
+                  className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${
+                    previewPeriodFilter === p.periodNo
+                      ? "bg-[var(--brand-purple)] text-white"
+                      : "bg-[var(--bg-card)] text-[var(--text-main)]"
+                  }`}
+                >
+                  Kỳ {p.periodNo} ({p.count} trận)
+                </button>
+              ))}
+
+              <select
+                aria-label="Lọc loại trận xem trước"
+                value={previewKindFilter}
+                onChange={(e) => setPreviewKindFilter(e.target.value)}
+                className="ml-auto h-8 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-2.5 text-xs font-semibold"
               >
-                {preview.hardIssues.length}
-              </strong>{" "}
-              · Cảnh báo (R5/R8): <strong>{preview.warnings.length}</strong>
-            </p>
+                <option value="all">Đơn & Đôi</option>
+                <option value="singles">Chỉ đơn</option>
+                <option value="doubles">Chỉ đôi</option>
+              </select>
+            </div>
+
+            {/* Danh sách chi tiết các trận xem trước */}
+            <div className="mt-3 grid max-h-[420px] gap-2 overflow-y-auto pr-1 sm:grid-cols-2 lg:grid-cols-3">
+              {previewMatchesFiltered.map((m, idx) => {
+                const sideA = m.sideAPlayerIds
+                  .map((id) => playerMap.get(id) ?? "?")
+                  .join(" + ");
+                const sideB = m.sideBPlayerIds
+                  .map((id) => playerMap.get(id) ?? "?")
+                  .join(" + ");
+                const giver =
+                  m.handicapGiver === "a"
+                    ? `${sideA} chấp`
+                    : m.handicapGiver === "b"
+                      ? `${sideB} chấp`
+                      : "Ngang";
+                return (
+                  <div
+                    key={`${m.periodNo}-${m.kind}-${idx}`}
+                    className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-2.5 text-xs"
+                  >
+                    <div className="flex items-center justify-between text-[11px] text-[var(--text-muted)]">
+                      <span className="font-bold text-[var(--brand-purple)] dark:text-[var(--brand-yellow)]">
+                        {m.kind === "singles" ? "Đơn" : "Đôi"}
+                      </span>
+                      <span>
+                        Mã {m.handicapCode} ({giver})
+                      </span>
+                    </div>
+                    <p className="mt-1 font-semibold">
+                      {sideA} <span className="text-[var(--text-muted)]">vs</span> {sideB}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
       </section>
