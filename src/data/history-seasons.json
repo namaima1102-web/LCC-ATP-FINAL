@@ -176,5 +176,219 @@
         ]
       }
     ]
+  },
+  {
+    "code": "S3-2026",
+    "name": "Mùa 3 năm 2026",
+    "note": "Thể thức 3 đội (15 tuyển thủ), phân hạng F / G / H",
+    "teams": [
+      {
+        "name": "LÊ ĐẠI HÀNH",
+        "color": "#2B6FD6",
+        "singlesPoints": 20,
+        "doublesPoints": 10,
+        "totalPoints": 30,
+        "players": [
+          {
+            "fullName": "Thùy",
+            "singlesPlayed": 10,
+            "singlesWins": 2,
+            "doublesPlayed": 3,
+            "doublesWins": 1,
+            "totalPlayed": 13,
+            "remaining": 5,
+            "winPct": 23,
+            "ratingStart": "H-",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Kiên",
+            "singlesPlayed": 10,
+            "singlesWins": 5,
+            "doublesPlayed": 7,
+            "doublesWins": 7,
+            "totalPlayed": 17,
+            "remaining": 1,
+            "winPct": 71,
+            "ratingStart": "G+",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Nhất",
+            "singlesPlayed": 10,
+            "singlesWins": 3,
+            "doublesPlayed": 7,
+            "doublesWins": 4,
+            "totalPlayed": 17,
+            "remaining": 1,
+            "winPct": 41,
+            "ratingStart": "G+",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Vinh",
+            "singlesPlayed": 10,
+            "singlesWins": 3,
+            "doublesPlayed": 5,
+            "doublesWins": 4,
+            "totalPlayed": 15,
+            "remaining": 3,
+            "winPct": 47,
+            "ratingStart": "H",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Túy",
+            "singlesPlayed": 10,
+            "singlesWins": 7,
+            "doublesPlayed": 6,
+            "doublesWins": 4,
+            "totalPlayed": 16,
+            "remaining": 2,
+            "winPct": 69,
+            "ratingStart": "G",
+            "ratingEnd": "—"
+          }
+        ]
+      },
+      {
+        "name": "NGÔ QUYỀN",
+        "color": "#DC4C46",
+        "singlesPoints": 22,
+        "doublesPoints": 6,
+        "totalPoints": 28,
+        "players": [
+          {
+            "fullName": "Thông",
+            "singlesPlayed": 10,
+            "singlesWins": 2,
+            "doublesPlayed": 6,
+            "doublesWins": 2,
+            "totalPlayed": 16,
+            "remaining": 2,
+            "winPct": 25,
+            "ratingStart": "H",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Dương",
+            "singlesPlayed": 10,
+            "singlesWins": 3,
+            "doublesPlayed": 6,
+            "doublesWins": 5,
+            "totalPlayed": 16,
+            "remaining": 2,
+            "winPct": 50,
+            "ratingStart": "G+",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Đức",
+            "singlesPlayed": 10,
+            "singlesWins": 7,
+            "doublesPlayed": 5,
+            "doublesWins": 1,
+            "totalPlayed": 15,
+            "remaining": 3,
+            "winPct": 53,
+            "ratingStart": "G+",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Thảo",
+            "singlesPlayed": 10,
+            "singlesWins": 5,
+            "doublesPlayed": 6,
+            "doublesWins": 1,
+            "totalPlayed": 16,
+            "remaining": 2,
+            "winPct": 38,
+            "ratingStart": "H",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Thanh",
+            "singlesPlayed": 10,
+            "singlesWins": 5,
+            "doublesPlayed": 7,
+            "doublesWins": 3,
+            "totalPlayed": 17,
+            "remaining": 1,
+            "winPct": 47,
+            "ratingStart": "G",
+            "ratingEnd": "—"
+          }
+        ]
+      },
+      {
+        "name": "TRẦN HƯNG ĐẠO",
+        "color": "#D946EF",
+        "singlesPoints": 33,
+        "doublesPoints": 5,
+        "totalPoints": 38,
+        "players": [
+          {
+            "fullName": "Khanh",
+            "singlesPlayed": 10,
+            "singlesWins": 6,
+            "doublesPlayed": 2,
+            "doublesWins": 1,
+            "totalPlayed": 12,
+            "remaining": 6,
+            "winPct": 58,
+            "ratingStart": "H",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Hiếu",
+            "singlesPlayed": 10,
+            "singlesWins": 6,
+            "doublesPlayed": 5,
+            "doublesWins": 1,
+            "totalPlayed": 15,
+            "remaining": 3,
+            "winPct": 47,
+            "ratingStart": "G",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Nam Gai",
+            "singlesPlayed": 10,
+            "singlesWins": 10,
+            "doublesPlayed": 6,
+            "doublesWins": 3,
+            "totalPlayed": 16,
+            "remaining": 2,
+            "winPct": 81,
+            "ratingStart": "F",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Nam",
+            "singlesPlayed": 10,
+            "singlesWins": 5,
+            "doublesPlayed": 5,
+            "doublesWins": 2,
+            "totalPlayed": 15,
+            "remaining": 3,
+            "winPct": 47,
+            "ratingStart": "G",
+            "ratingEnd": "—"
+          },
+          {
+            "fullName": "Sinh",
+            "singlesPlayed": 10,
+            "singlesWins": 6,
+            "doublesPlayed": 8,
+            "doublesWins": 3,
+            "totalPlayed": 18,
+            "remaining": 0,
+            "winPct": 50,
+            "ratingStart": "G",
+            "ratingEnd": "—"
+          }
+        ]
+      }
+    ]
   }
 ]
