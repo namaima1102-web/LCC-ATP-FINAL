@@ -69,7 +69,7 @@ export default function HomePage() {
           <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--text-muted)]">
             Sẵn sàng cho Mùa 5 ({season5.season.code})
           </h2>
-          <div className="mt-3 grid grid-cols-3 gap-3 text-center">
+          <div className="mt-3 grid grid-cols-2 gap-3 text-center sm:grid-cols-4">
             <div className="rounded-xl bg-[var(--bg-page)] p-3">
               <p className="text-xl font-extrabold text-[var(--brand-purple)] dark:text-[var(--brand-yellow)]">
                 {season5.teams.length}
@@ -84,9 +84,19 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl bg-[var(--bg-page)] p-3">
               <p className="text-xl font-extrabold text-[var(--brand-orange)]">
-                {season5.handicap_rules.length}
+                132
               </p>
-              <p className="mt-0.5 text-xs text-[var(--text-muted)]">Mức chấp</p>
+              <p className="mt-0.5 text-xs text-[var(--text-muted)]">
+                Tổng số trận đấu
+              </p>
+            </div>
+            <div className="rounded-xl bg-[var(--bg-page)] p-3">
+              <p className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                12 / 9
+              </p>
+              <p className="mt-0.5 text-xs text-[var(--text-muted)]">
+                Đơn / Đôi mỗi VĐV
+              </p>
             </div>
           </div>
 
