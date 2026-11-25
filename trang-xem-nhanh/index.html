@@ -1,0 +1,331 @@
+<title>Giải Bóng Bàn Gà Con</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+<style>
+  /* Layout: một cột hẹp, hai tab (Mùa 4 tổng kết / Mùa 5 chia đội). Màu đội lấy theo màu bảng Excel gốc. */
+  :root {
+    --bg: #f3f6fb; --surface: #ffffff; --ink: #13203a; --muted: #5a667c; --line: #dae1ec;
+    --ball: #e8590c; --good: #17703f; --bad: #b42318;
+    --llq: #2b6fd6; --kdv: #e0622b; --hv: #8e4ec6;
+    --t1: #2b6fd6; --t2: #d99a12; --t3: #1f9d6b; --t4: #8e4ec6;
+    --track: #e7ecf4;
+    --font: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1526; --surface: #162038; --ink: #e8edf8; --muted: #9ba7bf; --line: #27324d;
+      --ball: #ff8a3d; --good: #4fd18b; --bad: #ff8a80;
+      --llq: #5c97f0; --kdv: #f08550; --hv: #b784e6;
+      --t1: #5c97f0; --t2: #f0b83d; --t3: #46c796; --t4: #b784e6;
+      --track: #22304d; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1526; --surface: #162038; --ink: #e8edf8; --muted: #9ba7bf; --line: #27324d;
+    --ball: #ff8a3d; --good: #4fd18b; --bad: #ff8a80;
+    --llq: #5c97f0; --kdv: #f08550; --hv: #b784e6;
+    --t1: #5c97f0; --t2: #f0b83d; --t3: #46c796; --t4: #b784e6;
+    --track: #22304d; color-scheme: dark;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.5; }
+  * { box-sizing: border-box; }
+  .wrap { max-width: 980px; margin: 0 auto; padding-block: 20px 40px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 14px; }
+  h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+  h1 .ball { display: inline-block; width: .6em; height: .6em; border-radius: 50%; background: var(--ball); margin-right: .35em; vertical-align: .05em; }
+  .stamp { color: var(--muted); font-size: .8rem; }
+  nav { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+  nav button { font: inherit; font-weight: 600; color: var(--muted); background: none; border: 0; border-bottom: 3px solid transparent;
+    padding: 10px 14px; cursor: pointer; margin-bottom: -1px; }
+  nav button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ball); }
+  nav button:focus-visible, .chip:focus-visible, th button:focus-visible { outline: 2px solid var(--ball); outline-offset: 2px; }
+  h2 { font-size: 1.05rem; font-weight: 700; margin: 28px 0 10px; }
+  h2:first-child { margin-top: 0; }
+  .note { color: var(--muted); font-size: .82rem; margin: 6px 0 0; max-width: 70ch; }
+  section[hidden] { display: none !important; }
+
+  .champ { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+  .champ .lbl { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .champ .name { font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+  .champ .pts { margin-left: auto; font-size: 2rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .champ .pts small { font-size: .85rem; font-weight: 500; color: var(--muted); }
+  .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; flex: none; }
+
+  .teams { display: grid; gap: 12px; }
+  .trow { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+    display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) auto; gap: 8px 16px; align-items: center; }
+  .trow .tn { font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .bar { height: 14px; background: var(--track); border-radius: 7px; overflow: hidden; display: flex; }
+  .bar i { display: block; height: 100%; }
+  .bar i + i { opacity: .55; }
+  .trow .tv { font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; min-width: 5.5rem; }
+  .trow .tv small { display: block; font-weight: 400; color: var(--muted); font-size: .75rem; }
+  .legend { display: flex; gap: 16px; color: var(--muted); font-size: .78rem; margin-top: 8px; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; background: var(--muted); margin-right: 6px; vertical-align: -1px; }
+  .legend span:last-child::before { opacity: .5; }
+  @media (max-width: 560px) { .trow { grid-template-columns: 1fr auto; } .trow .bar { grid-column: 1 / -1; order: 3; } }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+  .card .k { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .card .v { font-size: 1.15rem; font-weight: 800; margin: 2px 0; }
+  .card .d { color: var(--muted); font-size: .82rem; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .chip { font: inherit; font-size: .82rem; font-weight: 600; background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 999px; padding: 5px 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .tablebox { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; min-width: 620px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 9px 12px; text-align: right; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { font-size: .74rem; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); background: var(--surface); }
+  th button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; font-weight: inherit; }
+  th button[data-dir]::after { content: " ▾"; }
+  th button[data-dir="1"]::after { content: " ▴"; }
+  tbody tr + tr td { border-top: 1px solid var(--line); }
+  td.who { font-weight: 600; }
+  td.who span { display: inline-flex; align-items: center; gap: 8px; }
+  .rate { display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; }
+  .rate b { font-weight: 600; min-width: 2.6rem; text-align: right; }
+  .rate em { font-style: normal; color: var(--muted); font-size: .76rem; min-width: 2.2rem; text-align: right; }
+  .rate u { display: block; width: 44px; height: 6px; background: var(--track); border-radius: 3px; overflow: hidden; text-decoration: none; }
+  .rate u i { display: block; height: 100%; background: var(--ink); opacity: .55; }
+  .up { color: var(--good); font-weight: 700; } .down { color: var(--bad); font-weight: 700; } .flat { color: var(--muted); }
+  .tag { font-size: .72rem; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; }
+
+  .grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .team5 { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; min-width: 0; }
+  .team5 > header { margin: 0; padding: 10px 14px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: nowrap; }
+  .team5 h3 { font-size: .95rem; margin: 0; display: flex; align-items: center; gap: 8px; }
+  .team5 .sum { font-weight: 800; font-variant-numeric: tabular-nums; }
+  .team5 .sum small { font-weight: 500; color: var(--muted); font-size: .72rem; }
+  .team5 ul { list-style: none; margin: 0; padding: 4px 14px 10px; }
+  .team5 li { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; padding: 7px 0; }
+  .team5 li + li { border-top: 1px solid var(--line); }
+  .team5 .nm { font-weight: 600; } .team5 .nm small { color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .team5 .pt { font-weight: 800; font-variant-numeric: tabular-nums; text-align: right; }
+  .team5 .mini { grid-column: 1 / -1; height: 5px; background: var(--track); border-radius: 3px; overflow: hidden; }
+  .team5 .mini i { display: block; height: 100%; opacity: .8; }
+  .flags { margin: 12px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; color: var(--muted); font-size: .85rem; }
+  .flags li::before { content: "▸ "; color: var(--ball); }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1><span class="ball"></span>Giải Bóng Bàn Gà Con</h1>
+    <div class="stamp">Cập nhật 25/11/2026 · 16 tuyển thủ</div>
+  </header>
+
+  <nav role="tablist" aria-label="Chọn mùa giải">
+    <button role="tab" id="tab-mua5" aria-selected="true" aria-controls="mua5">Mùa 5 · Chia đội</button>
+    <button role="tab" id="tab-mua4" aria-selected="false" aria-controls="mua4">Mùa 4 · Tổng kết</button>
+  </nav>
+
+  <!-- ===== MÙA 5 ===== -->
+  <section id="mua5" role="tabpanel" aria-labelledby="tab-mua5">
+    <h2>Kết quả bốc thăm chia đội</h2>
+    <div class="grid4" id="teams5"></div>
+    <ul class="flags">
+      <li>Tổng điểm bốn đội: 34 · 33 · 34 · 33. Chênh lệch tối đa 1 điểm.</li>
+      <li>Tân (12 điểm) và Khanh (7 điểm) chưa có dữ liệu thi đấu Mùa 4. Điểm của hai người sẽ được xét lại sau vòng 2.</li>
+      <li>Phương không tham gia Mùa 5.</li>
+    </ul>
+
+    <h2>Bảng điểm thống nhất Mùa 5</h2>
+    <div class="chips" id="chips5" role="group" aria-label="Lọc theo đội"></div>
+    <div class="tablebox"><table id="tbl5"></table></div>
+  </section>
+
+  <!-- ===== MÙA 4 ===== -->
+  <section id="mua4" role="tabpanel" aria-labelledby="tab-mua4" hidden>
+    <h2>Đội vô địch</h2>
+    <div class="champ">
+      <div>
+        <div class="lbl">Vô địch Mùa 4</div>
+        <div class="name"><span class="dot" style="background:var(--kdv)"></span>Kinh Dương Vương</div>
+      </div>
+      <div class="pts">43<small> / 70 trận thắng</small></div>
+    </div>
+
+    <h2>Xếp hạng đội</h2>
+    <div class="teams" id="teams4"></div>
+    <div class="legend"><span>Thắng đơn (tối đa 50)</span><span>Thắng đôi (tối đa 20)</span></div>
+    <p class="note">Điểm đội tính bằng số trận thắng. Mỗi đội đấu 70 trận: 50 đơn và 20 đôi. Bảng Excel gốc ghi 66% · 54% · 30% cho ba đội. Đó là trung bình tỷ lệ thắng của các thành viên chứ không phải tỷ lệ thắng của đội, nên khác với số ở đây.</p>
+
+    <h2>Nổi bật</h2>
+    <div class="cards">
+      <div class="card"><div class="k">Đơn xuất sắc</div><div class="v">Hiếu · 90%</div><div class="d">Thắng 9/10 trận đơn</div></div>
+      <div class="card"><div class="k">Đôi xuất sắc</div><div class="v">Nam Gai · Đức · Thông</div><div class="d">Mỗi người thắng 7/8 trận đôi (88%)</div></div>
+      <div class="card"><div class="k">Thắng nhiều nhất tổng thể</div><div class="v">Nam Gai · 78%</div><div class="d">14/18 trận, dù là người điểm cao nhất (12)</div></div>
+    </div>
+
+    <h2>Thành tích từng tuyển thủ</h2>
+    <div class="chips" id="chips4" role="group" aria-label="Lọc theo đội"></div>
+    <div class="tablebox"><table id="tbl4"></table></div>
+    <p class="note">Mỗi người đấu 18 trận: 10 đơn và 8 đôi. Điểm Mùa 5 lấy từ bảng điểm thống nhất. Luật điều chỉnh: từ 29% trở xuống giảm 1 điểm, 30–78% giữ nguyên, từ 79% trở lên tăng 1 điểm. Hiếu và Kiên được tăng 1 điểm theo quyết định của ban tổ chức.</p>
+  </section>
+</div>
+
+<script>
+(function () {
+  // ---- Dữ liệu (nguồn: file Excel Mùa 4 và bảng điểm thống nhất Mùa 5) ----
+  var T4 = {
+    LLQ: { name: "Lạc Long Quân", color: "var(--llq)", s: 31, d: 9 },
+    KDV: { name: "Kinh Dương Vương", color: "var(--kdv)", s: 27, d: 16 },
+    HV:  { name: "Hùng Vương", color: "var(--hv)", s: 17, d: 5 }
+  };
+  // [tên, đội M4, điểm M4, điểm M5 (null = không tham gia), % thắng tổng, đơn thắng/đấu, đôi thắng/đấu]
+  var P = [
+    ["Thanh", "LLQ", 8, 7, 28, 3, 2], ["Hiếu", "LLQ", 8, 9, 67, 9, 3], ["Kiên", "LLQ", 9, 10, 67, 6, 6],
+    ["Thảo", "LLQ", 7, 7, 56, 7, 3], ["Vinh", "LLQ", 7, 7, 56, 6, 4],
+    ["Phương", "KDV", 7, null, 44, 2, 6], ["Nam Gai", "KDV", 12, 12, 78, 7, 7], ["Đức", "KDV", 9, 9, 61, 4, 7],
+    ["Thông", "KDV", 6, 6, 72, 6, 7], ["Sinh", "KDV", 8, 8, 72, 8, 5],
+    ["Dũng", "HV", 6, 6, 6, 0, 1], ["Nhất", "HV", 9, 9, 33, 2, 4], ["Dương", "HV", 9, 9, 39, 6, 1],
+    ["Nam", "HV", 8, 8, 39, 5, 2], ["Hùng", "HV", 8, 8, 33, 4, 2]
+  ];
+  var NEW = [["Tân", 12], ["Khanh", 7]];
+  var T5 = [
+    { n: "Đội 1", c: "var(--t1)", m: ["Nam Gai", "Hùng", "Thanh", "Thảo"] },
+    { n: "Đội 2", c: "var(--t2)", m: ["Kiên", "Dương", "Sinh", "Dũng"] },
+    { n: "Đội 3", c: "var(--t3)", m: ["Nhất", "Đức", "Hiếu", "Khanh"] },
+    { n: "Đội 4", c: "var(--t4)", m: ["Tân", "Nam", "Vinh", "Thông"] }
+  ];
+
+  // Bảng tra người chơi
+  var byName = {};
+  P.forEach(function (p) { byName[p[0]] = { name: p[0], team4: p[1], p4: p[2], p5: p[3], win: p[4], sw: p[5], dw: p[6] }; });
+  NEW.forEach(function (p) { byName[p[0]] = { name: p[0], team4: null, p4: null, p5: p[1], win: null, sw: null, dw: null, isNew: true }; });
+  var team5Of = {};
+  T5.forEach(function (t) { t.m.forEach(function (n) { team5Of[n] = t; }); });
+
+  function el(html) { var d = document.createElement("div"); d.innerHTML = html; return d.firstElementChild; }
+  function dot(c) { return '<span class="dot" style="background:' + c + '"></span>'; }
+  function rate(w, n) {
+    var pct = Math.round(w / n * 100);
+    return '<span class="rate"><b>' + pct + '%</b><em>' + w + '/' + n + '</em><u><i style="width:' + pct + '%"></i></u></span>';
+  }
+
+  // ---- Mùa 4: xếp hạng đội ----
+  var order4 = Object.keys(T4).sort(function (a, b) { return (T4[b].s + T4[b].d) - (T4[a].s + T4[a].d); });
+  var box4 = document.getElementById("teams4");
+  order4.forEach(function (k) {
+    var t = T4[k], tot = t.s + t.d;
+    box4.appendChild(el('<div class="trow"><div class="tn">' + dot(t.color) + t.name + '</div>' +
+      '<div class="bar" role="img" aria-label="' + t.name + ': ' + t.s + ' đơn, ' + t.d + ' đôi"><i style="width:' + (t.s / 70 * 100) + '%;background:' + t.color + '"></i><i style="width:' + (t.d / 70 * 100) + '%;background:' + t.color + '"></i></div>' +
+      '<div class="tv">' + tot + ' / 70<small>' + t.s + ' đơn + ' + t.d + ' đôi</small></div></div>'));
+  });
+
+  // ---- Bảng có lọc và sắp xếp ----
+  function makeTable(tableId, chipsId, cols, rows, teamKeyFn, chips) {
+    var table = document.getElementById(tableId), chipBox = document.getElementById(chipsId);
+    var state = { filter: "all", sort: null, dir: -1 };
+    chips.forEach(function (c) {
+      var b = el('<button class="chip" type="button" aria-pressed="' + (c.key === "all") + '">' + (c.color ? dot(c.color) : "") + c.label + '</button>');
+      b.addEventListener("click", function () {
+        state.filter = c.key;
+        Array.prototype.forEach.call(chipBox.children, function (x) { x.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", "true"); draw();
+      });
+      chipBox.appendChild(b);
+    });
+    function draw() {
+      var list = rows.filter(function (r) { return state.filter === "all" || teamKeyFn(r) === state.filter; });
+      if (state.sort !== null) {
+        var col = cols[state.sort];
+        list = list.slice().sort(function (a, b) {
+          var x = col.val(a), y = col.val(b);
+          if (x === null) return 1; if (y === null) return -1;
+          return typeof x === "string" ? state.dir * -1 * x.localeCompare(y, "vi") : state.dir * (x - y);
+        });
+      }
+      table.innerHTML = "";
+      var thead = document.createElement("thead"), tr = document.createElement("tr");
+      cols.forEach(function (c, i) {
+        var th = document.createElement("th");
+        var b = document.createElement("button"); b.type = "button"; b.textContent = c.label;
+        if (state.sort === i) b.setAttribute("data-dir", state.dir === 1 ? "1" : "-1");
+        b.addEventListener("click", function () {
+          if (state.sort === i) state.dir = -state.dir; else { state.sort = i; state.dir = c.text ? 1 : -1; }
+          draw();
+        });
+        th.appendChild(b); tr.appendChild(th);
+      });
+      thead.appendChild(tr); table.appendChild(thead);
+      var tb = document.createElement("tbody");
+      list.forEach(function (r) {
+        var row = document.createElement("tr");
+        row.innerHTML = cols.map(function (c) { return "<td" + (c.cls ? ' class="' + c.cls + '"' : "") + ">" + c.cell(r) + "</td>"; }).join("");
+        tb.appendChild(row);
+      });
+      table.appendChild(tb);
+    }
+    draw();
+  }
+
+  function change(r) {
+    if (r.p5 === null) return '<span class="tag">Nghỉ M5</span>';
+    if (r.p4 === null) return '<span class="tag">Mới</span>';
+    var d = r.p5 - r.p4;
+    return d > 0 ? '<span class="up">▲ +' + d + '</span>' : d < 0 ? '<span class="down">▼ ' + String(d).replace("-", "−") + '</span>' : '<span class="flat">=</span>';
+  }
+  var teamDot4 = function (r) { return r.team4 ? T4[r.team4].color : "var(--muted)"; };
+
+  // Mùa 4
+  var all4 = P.map(function (p) { return byName[p[0]]; });
+  makeTable("tbl4", "chips4", [
+    { label: "Tuyển thủ", text: true, cls: "who", val: function (r) { return r.name; }, cell: function (r) { return "<span>" + dot(teamDot4(r)) + r.name + "</span>"; } },
+    { label: "Tổng thắng", val: function (r) { return r.win; }, cell: function (r) { return "<b>" + r.win + "%</b>"; } },
+    { label: "Đơn", val: function (r) { return r.sw; }, cell: function (r) { return rate(r.sw, 10); } },
+    { label: "Đôi", val: function (r) { return r.dw; }, cell: function (r) { return rate(r.dw, 8); } },
+    { label: "Điểm M4", val: function (r) { return r.p4; }, cell: function (r) { return r.p4; } },
+    { label: "Điểm M5", val: function (r) { return r.p5; }, cell: function (r) { return r.p5 === null ? "—" : "<b>" + r.p5 + "</b>"; } },
+    { label: "Thay đổi", val: function (r) { return r.p5 === null ? null : r.p5 - r.p4; }, cell: change }
+  ], all4, function (r) { return r.team4; }, [
+    { key: "all", label: "Tất cả" },
+    { key: "LLQ", label: "Lạc Long Quân", color: "var(--llq)" },
+    { key: "KDV", label: "Kinh Dương Vương", color: "var(--kdv)" },
+    { key: "HV", label: "Hùng Vương", color: "var(--hv)" }
+  ]);
+
+  // Mùa 5: thẻ đội
+  var box5 = document.getElementById("teams5");
+  T5.forEach(function (t) {
+    var sum = t.m.reduce(function (s, n) { return s + byName[n].p5; }, 0);
+    var items = t.m.map(function (n) { return byName[n]; }).sort(function (a, b) { return b.p5 - a.p5; }).map(function (p) {
+      var sub = p.isNew ? "mới" : "M4: " + p.win + "%";
+      return '<li><span class="nm">' + p.name + '<small>' + sub + '</small></span><span class="pt">' + p.p5 + '</span>' +
+        '<span class="mini"><i style="width:' + (p.p5 / 12 * 100) + '%;background:' + t.c + '"></i></span></li>';
+    }).join("");
+    box5.appendChild(el('<article class="team5"><header><h3>' + dot(t.c) + t.n + '</h3><span class="sum">' + sum + ' <small>điểm</small></span></header><ul>' + items + '</ul></article>'));
+  });
+
+  // Mùa 5: bảng điểm
+  var all5 = Object.keys(byName).map(function (n) { return byName[n]; }).filter(function (r) { return r.p5 !== null; });
+  makeTable("tbl5", "chips5", [
+    { label: "Tuyển thủ", text: true, cls: "who", val: function (r) { return r.name; }, cell: function (r) { return "<span>" + dot(team5Of[r.name].c) + r.name + "</span>"; } },
+    { label: "Đội M5", text: true, val: function (r) { return team5Of[r.name].n; }, cell: function (r) { return team5Of[r.name].n; } },
+    { label: "Điểm M5", val: function (r) { return r.p5; }, cell: function (r) { return "<b>" + r.p5 + "</b>"; } },
+    { label: "Điểm M4", val: function (r) { return r.p4; }, cell: function (r) { return r.p4 === null ? "—" : r.p4; } },
+    { label: "Thay đổi", val: function (r) { return r.p4 === null ? null : r.p5 - r.p4; }, cell: change },
+    { label: "Thắng M4", val: function (r) { return r.win; }, cell: function (r) { return r.win === null ? "—" : r.win + "%"; } }
+  ], all5, function (r) { return team5Of[r.name].n; }, [{ key: "all", label: "Tất cả" }].concat(T5.map(function (t) { return { key: t.n, label: t.n, color: t.c }; })));
+
+  // ---- Tab ----
+  var tabs = { mua5: document.getElementById("tab-mua5"), mua4: document.getElementById("tab-mua4") };
+  function show(id) {
+    if (!tabs[id]) id = "mua5";
+    Object.keys(tabs).forEach(function (k) {
+      tabs[k].setAttribute("aria-selected", String(k === id));
+      document.getElementById(k).hidden = k !== id;
+    });
+  }
+  Object.keys(tabs).forEach(function (k) {
+    tabs[k].addEventListener("click", function () { try { location.hash = k; } catch (e) {} show(k); });
+  });
+  window.addEventListener("hashchange", function () { show(location.hash.slice(1)); });
+  show(location.hash.slice(1));
+})();
+</script>

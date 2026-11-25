@@ -1,0 +1,50 @@
+{
+  "season": {
+    "code": "S5-2026",
+    "name": "Legend Chicks Cup 2026",
+    "subtitle": "Giải bóng bàn Gà Con · Mùa 5",
+    "status": "draft"
+  },
+  "teams": [
+    { "name": "Đội 1", "color": "#2B6FD6", "sort_order": 1 },
+    { "name": "Đội 2", "color": "#D99A12", "sort_order": 2 },
+    { "name": "Đội 3", "color": "#1F9D6B", "sort_order": 3 },
+    { "name": "Đội 4", "color": "#8E4EC6", "sort_order": 4 }
+  ],
+  "players": [
+    { "full_name": "Nam Gai", "nickname": null, "team": "Đội 1", "rating_start": 12, "rating_prev": 12, "m4_win_pct": 78, "is_provisional": false },
+    { "full_name": "Hùng",    "nickname": null, "team": "Đội 1", "rating_start": 8,  "rating_prev": 8,  "m4_win_pct": 33, "is_provisional": false },
+    { "full_name": "Thanh",   "nickname": null, "team": "Đội 1", "rating_start": 7,  "rating_prev": 8,  "m4_win_pct": 28, "is_provisional": false },
+    { "full_name": "Thảo",    "nickname": null, "team": "Đội 1", "rating_start": 7,  "rating_prev": 7,  "m4_win_pct": 56, "is_provisional": false },
+
+    { "full_name": "Kiên",    "nickname": null, "team": "Đội 2", "rating_start": 10, "rating_prev": 9,  "m4_win_pct": 67, "is_provisional": false },
+    { "full_name": "Dương",   "nickname": null, "team": "Đội 2", "rating_start": 9,  "rating_prev": 9,  "m4_win_pct": 39, "is_provisional": false },
+    { "full_name": "Sinh",    "nickname": null, "team": "Đội 2", "rating_start": 8,  "rating_prev": 8,  "m4_win_pct": 72, "is_provisional": false },
+    { "full_name": "Dũng",    "nickname": "Dũng zin", "team": "Đội 2", "rating_start": 6, "rating_prev": 6, "m4_win_pct": 6, "is_provisional": false },
+
+    { "full_name": "Nhất",    "nickname": null, "team": "Đội 3", "rating_start": 9,  "rating_prev": 9,  "m4_win_pct": 33, "is_provisional": false },
+    { "full_name": "Đức",     "nickname": null, "team": "Đội 3", "rating_start": 9,  "rating_prev": 9,  "m4_win_pct": 61, "is_provisional": false },
+    { "full_name": "Hiếu",    "nickname": null, "team": "Đội 3", "rating_start": 9,  "rating_prev": 8,  "m4_win_pct": 67, "is_provisional": false },
+    { "full_name": "Khanh",   "nickname": null, "team": "Đội 3", "rating_start": 7,  "rating_prev": 7,  "m4_win_pct": null, "is_provisional": true, "note": "Có điểm M3 = 7, không thi đấu M4" },
+
+    { "full_name": "Tân",     "nickname": null, "team": "Đội 4", "rating_start": 12, "rating_prev": null, "m4_win_pct": null, "is_provisional": true, "note": "Người mới, chưa có dữ liệu" },
+    { "full_name": "Nam",     "nickname": "Nam Gấu", "team": "Đội 4", "rating_start": 8, "rating_prev": 8, "m4_win_pct": 39, "is_provisional": false },
+    { "full_name": "Vinh",    "nickname": null, "team": "Đội 4", "rating_start": 7,  "rating_prev": 7,  "m4_win_pct": 56, "is_provisional": false },
+    { "full_name": "Thông",   "nickname": "Gió", "team": "Đội 4", "rating_start": 6, "rating_prev": 6, "m4_win_pct": 72, "is_provisional": false }
+  ],
+  "handicap_rules": [
+    { "diff": 0,   "singles": "0-0-0", "doubles": "0-0-0" },
+    { "diff": 0.5, "singles": "0-1-0", "doubles": "0-1-0" },
+    { "diff": 1,   "singles": "0-2-0", "doubles": "0-2-0" },
+    { "diff": 1.5, "singles": "2-0-2", "doubles": "2-0-2" },
+    { "diff": 2,   "singles": "2-2-2", "doubles": "2-2-2" },
+    { "diff": 2.5, "singles": "2-3-2", "doubles": "2-3-2" },
+    { "diff": 3,   "singles": "3-3-3", "doubles": "3-3-3" },
+    { "diff": 3.5, "singles": "3-4-3", "doubles": "3-4-3" },
+    { "diff": 4,   "singles": "4-4-4", "doubles": "4-4-4" },
+    { "diff": 4.5, "singles": "4-5-4", "doubles": "4-5-4" },
+    { "diff": 5,   "singles": "5-5-5", "doubles": "5-5-5" },
+    { "diff": 5.5, "singles": "5-6-5", "doubles": "5-6-5" },
+    { "diff": 6,   "singles": "6-6-6", "doubles": "6-6-6" }
+  ]
+}

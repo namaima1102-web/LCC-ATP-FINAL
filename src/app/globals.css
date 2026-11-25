@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Màu thương hiệu trích xuất từ logo Legend Chicks Cup 2026 & Phụ lục 16.1 */
+  --brand-purple: #6d28d9;
+  --brand-purple-vivid: #7c1ae5;
+  --brand-navy: #1b2470;
+  --brand-navy-deep: #0b1542;
+  --brand-yellow: #ffc21a;
+  --brand-orange: #f7931e;
+  --brand-blue: #2f5bea;
+
+  /* Bề mặt chế độ sáng */
+  --bg-page: #f8f9fc;
+  --bg-card: #ffffff;
+  --text-main: #111827;
+  --text-muted: #4b5563;
+  --border-subtle: #e5e7eb;
+}
+
+.dark {
+  /* Bề mặt chế độ tối */
+  --bg-page: #090e29;
+  --bg-card: #121a45;
+  --text-main: #f9fafb;
+  --text-muted: #cbd5e1;
+  --border-subtle: #27326c;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+}
