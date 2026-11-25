@@ -196,6 +196,16 @@ export default async function AdminDashboardPage() {
               Tải file Excel 4 sheet (Tuyển thủ, Lịch, Kết quả, Bảng xếp hạng).
             </p>
           </Link>
+
+          <Link
+            href="/admin/fund"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">Quản lý Quỹ CLB (50k/mùa)</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Cập nhật tiền đóng quỹ, bấm +50k nhanh và tự tính Còn dư / Cần đóng.
+            </p>
+          </Link>
         </section>
       </main>
     </div>

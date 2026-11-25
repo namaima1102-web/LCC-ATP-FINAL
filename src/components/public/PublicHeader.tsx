@@ -15,6 +15,7 @@ const PUBLIC_NAV = [
   { href: "/calculator", label: "Máy tính chấp" },
   { href: "/tonight", label: "Tối nay ai đến" },
   { href: "/history", label: "Lịch sử các mùa" },
+  { href: "/fund", label: "Quỹ CLB" },
   { href: "/rules", label: "Luật chấp & Quy định" },
 ];
 

@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { href: "/admin/settings", label: "Cấu hình" },
   { href: "/admin/audit", label: "Nhật ký" },
   { href: "/admin/data", label: "Xuất Excel" },
+  { href: "/admin/fund", label: "Quỹ CLB" },
 ];
 
 export function AdminHeader({ adminLabel }: { adminLabel: string }) {
