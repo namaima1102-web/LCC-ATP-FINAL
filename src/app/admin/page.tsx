@@ -146,6 +146,36 @@ export default async function AdminDashboardPage() {
               Cập nhật kết quả xử thua cho trận tồn cuối kỳ và khóa kỳ thi đấu.
             </p>
           </Link>
+
+          <Link
+            href="/admin/handicap"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">A6 · Bảng chấp</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Sửa mã chấp từng mức chênh và tự động cập nhật lại các trận chưa đấu.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/ratings"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">A7 · Điều chỉnh điểm</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Xem gợi ý tăng/giảm điểm cuối mùa và chốt điểm (ghi đè kèm lý do).
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/settings"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">A8 · Cấu hình mùa giải</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Chỉnh ngưỡng tăng/giảm điểm, cảnh báo trận tồn, số bàn và chống spam.
+            </p>
+          </Link>
         </section>
       </main>
     </div>

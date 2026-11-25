@@ -14,6 +14,9 @@ const NAV_ITEMS = [
   { href: "/admin/matches", label: "Quản lý trận" },
   { href: "/admin/progress", label: "Tiến độ & Cảnh báo" },
   { href: "/admin/forfeits", label: "Đóng kỳ & Xử thua" },
+  { href: "/admin/handicap", label: "Bảng chấp" },
+  { href: "/admin/ratings", label: "Điểm cuối mùa" },
+  { href: "/admin/settings", label: "Cấu hình" },
 ];
 
 export function AdminHeader({ adminLabel }: { adminLabel: string }) {

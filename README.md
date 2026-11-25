@@ -52,14 +52,18 @@ Website quản lý và hiển thị giải bóng bàn nội bộ CLB (16 tuyển
 4. `/admin/progress` (A11): Theo dõi tiến độ từng kỳ, cảnh báo trận tồn theo tuyển thủ và đội.
 5. `/admin/submissions` (A1): Duyệt / Sửa rồi duyệt / Từ chối (có lý do) bản gửi tỉ số từ khách; phát hiện xung đột.
 6. `/admin/forfeits`: Cập nhật kết quả xử thua từng trận cuối kỳ (`winner_a`, `winner_b`, `both`) và đóng kỳ.
+7. `/admin/handicap` (A6), `/admin/ratings` (A7), `/admin/settings` (A8): Sửa bảng chấp, chốt điểm cuối mùa và cấu hình toàn bộ luật giải không cần sửa code.
 
-## Trang công khai (Milestone M4)
+## Trang công khai (Milestone M4 & M6)
 
 - `/` (W1): Trang chủ, dải cảnh báo trận tồn, xếp hạng 4 đội, kết quả mới nhất.
 - `/schedule` (W2): Lịch & kết quả các kỳ đã đăng, lọc theo kỳ/đội/người, xem mã chấp từng set.
-- `/matches/[id]` (W3): Chi tiết trận đấu và bảng chấp Set 1–5.
+- `/matches/[id]` (W3): Chi tiết trận đấu, bảng chấp Set 1–5 và form gửi tỉ số công khai.
 - `/players` & `/players/[id]` (W4): Hồ sơ cá nhân, trận còn nợ trong kỳ, mã chấp với từng đối thủ, điểm dự kiến.
 - `/standings` (W5): Bảng xếp hạng Đội, Cá nhân, Cặp đôi.
+- `/calculator` (W6): Máy tính mã chấp nhanh cho đơn và đôi.
+- `/tonight` (W9): Điểm danh có mặt tối nay (24h) và gợi ý trận khả thi không trùng người.
+- `/rules` (W7): Luật chấp & Quy định giải đấu.
 
 ## Mặc định tạm đang dùng (theo Phần 15 của PRD)
 

@@ -10,6 +10,8 @@ const PUBLIC_NAV = [
   { href: "/schedule", label: "Lịch & Kết quả" },
   { href: "/standings", label: "Bảng xếp hạng" },
   { href: "/players", label: "Tuyển thủ" },
+  { href: "/calculator", label: "Máy tính chấp" },
+  { href: "/tonight", label: "Tối nay ai đến" },
   { href: "/rules", label: "Luật chấp & Quy định" },
 ];
 
