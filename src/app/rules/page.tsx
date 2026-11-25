@@ -66,11 +66,17 @@ export default async function PublicRulesPage() {
                 </thead>
                 <tbody>
                   {rules.map((r) => {
-                    const sets = getHandicapBreakdown(
+                    const singlesSets = getHandicapBreakdown(
                       r.singlesCode,
                       5,
                       settings.handicap_pattern
                     );
+                    const doublesSets = getHandicapBreakdown(
+                      r.doublesCode,
+                      5,
+                      settings.handicap_pattern
+                    );
+                    const sameCode = r.singlesCode === r.doublesCode;
                     return (
                       <tr
                         key={r.diff}
@@ -86,9 +92,28 @@ export default async function PublicRulesPage() {
                           {r.doublesCode}
                         </td>
                         <td className="px-3 py-2.5 text-xs text-[var(--text-muted)]">
-                          {r.diff === 0
-                            ? "Ngang điểm (0-0-0-0-0)"
-                            : sets.map((s) => `S${s.setNo}: ${s.points}`).join(" · ")}
+                          {r.diff === 0 ? (
+                            "Ngang điểm (0-0-0-0-0)"
+                          ) : sameCode ? (
+                            singlesSets
+                              .map((s) => `S${s.setNo}: ${s.points}`)
+                              .join(" · ")
+                          ) : (
+                            <div className="flex flex-col gap-0.5">
+                              <span>
+                                <strong>Đơn:</strong>{" "}
+                                {singlesSets
+                                  .map((s) => `S${s.setNo}: ${s.points}`)
+                                  .join(" · ")}
+                              </span>
+                              <span>
+                                <strong>Đôi:</strong>{" "}
+                                {doublesSets
+                                  .map((s) => `S${s.setNo}: ${s.points}`)
+                                  .join(" · ")}
+                              </span>
+                            </div>
+                          )}
                         </td>
                       </tr>
                     );
