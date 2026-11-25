@@ -44,6 +44,12 @@ Website quản lý và hiển thị giải bóng bàn nội bộ CLB (16 tuyển
 - Kiểm tra kiểu TypeScript: `npm run typecheck`
 - Build kiểm tra bản chạy chính thức: `npm run build`
 
+## Luồng quản trị Admin (Milestone M3)
+
+1. `/admin/teams` (A3): Sửa tên đội, màu đội, điểm trình, đánh dấu `Điểm tạm` (khi đổi điểm, mã chấp các trận chưa đấu tự động tính lại).
+2. `/admin/schedule` (A4): Chọn 4 kỳ (hoặc 3 kỳ), bấm **Sinh & Xem trước (132 trận)** → **Lưu lịch vào DB**, chỉnh ngày bắt đầu/kết thúc từng kỳ và bấm **Đăng lịch Kỳ N** để công khai.
+3. `/admin/matches` (A5): Lọc trận theo kỳ, đổi kỳ cho trận (bắt buộc nhập lý do nếu kỳ đã đăng) hoặc hủy/mở lại trận.
+
 ## Mặc định tạm đang dùng (theo Phần 15 của PRD)
 
 - **Thể thức:** Đơn và đôi đều 5 set (thắng 3 set). Mã chấp `x-y-z` áp dụng lẻ dùng số đầu, chẵn dùng số giữa.

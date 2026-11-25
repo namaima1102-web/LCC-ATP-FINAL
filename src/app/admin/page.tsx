@@ -1,10 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { AdminHeader } from "@/components/admin/AdminHeader";
+import { loadCurrentSeasonContext } from "@/lib/supabase/admin-season";
 import { getCurrentAdmin } from "@/lib/supabase/auth";
-import { createClient } from "@/lib/supabase/server";
-import { LogoutButton } from "./LogoutButton";
+import { createAdminClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboardPage() {
   const admin = await getCurrentAdmin();
@@ -12,72 +11,28 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login");
   }
 
-  const supabase = await createClient();
-  const { data: season } = await supabase
-    .from("seasons")
-    .select("id, code, name, status")
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  let teamsCount = 0;
-  let playersCount = 0;
-  let handicapCount = 0;
-
-  if (season) {
-    const [teamsRes, playersRes, hcRes] = await Promise.all([
-      supabase
-        .from("teams")
-        .select("id", { count: "exact", head: true })
-        .eq("season_id", season.id),
-      supabase
-        .from("season_players")
-        .select("player_id", { count: "exact", head: true })
-        .eq("season_id", season.id),
-      supabase
-        .from("handicap_rules")
-        .select("diff", { count: "exact", head: true })
-        .eq("season_id", season.id),
-    ]);
-    teamsCount = teamsRes.count ?? 0;
-    playersCount = playersRes.count ?? 0;
-    handicapCount = hcRes.count ?? 0;
+  const ctx = await loadCurrentSeasonContext();
+  let matchesCount = 0;
+  if (ctx) {
+    const db = createAdminClient();
+    const { count } = await db
+      .from("matches")
+      .select("id", { count: "exact", head: true })
+      .eq("season_id", ctx.season.id);
+    matchesCount = count ?? 0;
   }
+
+  const publishedPeriods =
+    ctx?.periods.filter((p) => p.status === "published").length ?? 0;
 
   return (
     <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-main)]">
-      <header className="border-b border-[var(--border-subtle)] bg-[var(--bg-card)]">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
-          <div className="flex min-w-0 items-center gap-2.5">
-            <Image
-              src="/logo-legend-chicks-cup.png"
-              alt="Logo Legend Chicks Cup 2026"
-              width={36}
-              height={36}
-              className="h-9 w-9 shrink-0 object-contain"
-            />
-            <div className="min-w-0">
-              <p className="truncate text-sm font-extrabold text-[var(--brand-navy)] dark:text-[var(--brand-yellow)]">
-                Quản trị giải đấu
-              </p>
-              <p className="truncate text-xs text-[var(--text-muted)]">
-                {admin.displayName || admin.email}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <LogoutButton />
-          </div>
-        </div>
-      </header>
+      <AdminHeader adminLabel={admin.displayName || admin.email || "Admin"} />
 
-      <main className="mx-auto flex max-w-3xl flex-col gap-5 px-4 py-6">
+      <main className="mx-auto flex max-w-4xl flex-col gap-5 px-4 py-6">
         <section className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-5">
           <div className="flex items-center justify-between gap-2">
-            <h1 className="text-lg font-extrabold">
-              Trạng thái dữ liệu (Milestone M1)
-            </h1>
+            <h1 className="text-lg font-extrabold">Tổng quan mùa giải</h1>
             <Link
               href="/"
               className="text-xs font-semibold text-[var(--brand-blue)] hover:underline"
@@ -86,33 +41,40 @@ export default async function AdminDashboardPage() {
             </Link>
           </div>
 
-          {season ? (
+          {ctx ? (
             <div className="mt-4">
               <p className="text-sm text-[var(--text-muted)]">
                 Mùa hiện tại:{" "}
                 <strong className="text-[var(--text-main)]">
-                  {season.name} ({season.code})
+                  {ctx.season.name} ({ctx.season.code})
                 </strong>{" "}
-                · Trạng thái: <code className="text-xs">{season.status}</code>
+                · Trạng thái: <code className="text-xs">{ctx.season.status}</code>
               </p>
-              <div className="mt-3 grid grid-cols-3 gap-3 text-center">
+
+              <div className="mt-3 grid grid-cols-2 gap-3 text-center sm:grid-cols-4">
                 <div className="rounded-xl bg-[var(--bg-page)] p-3">
                   <p className="text-xl font-extrabold text-[var(--brand-purple)] dark:text-[var(--brand-yellow)]">
-                    {teamsCount}
+                    {ctx.teams.length}
                   </p>
                   <p className="text-xs text-[var(--text-muted)]">Đội</p>
                 </div>
                 <div className="rounded-xl bg-[var(--bg-page)] p-3">
                   <p className="text-xl font-extrabold text-[var(--brand-blue)] dark:text-[#60a5fa]">
-                    {playersCount}
+                    {ctx.players.length}
                   </p>
                   <p className="text-xs text-[var(--text-muted)]">Tuyển thủ</p>
                 </div>
                 <div className="rounded-xl bg-[var(--bg-page)] p-3">
                   <p className="text-xl font-extrabold text-[var(--brand-orange)]">
-                    {handicapCount}
+                    {matchesCount}
                   </p>
-                  <p className="text-xs text-[var(--text-muted)]">Mức chấp</p>
+                  <p className="text-xs text-[var(--text-muted)]">Trận đã sinh</p>
+                </div>
+                <div className="rounded-xl bg-[var(--bg-page)] p-3">
+                  <p className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                    {publishedPeriods}/{ctx.periods.length}
+                  </p>
+                  <p className="text-xs text-[var(--text-muted)]">Kỳ đã đăng</p>
                 </div>
               </div>
             </div>
@@ -122,6 +84,38 @@ export default async function AdminDashboardPage() {
               <code>npm run seed</code> để nạp Mùa 5.
             </p>
           )}
+        </section>
+
+        <section className="grid gap-3 sm:grid-cols-3">
+          <Link
+            href="/admin/teams"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">A3 · Đội & Tuyển thủ</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Đổi tên đội, màu đội, sửa điểm trình và đánh dấu điểm tạm.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/schedule"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">A4 · Bộ sinh lịch & Kỳ</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Sinh 132 trận, chia 4 kỳ hoặc 3 kỳ, kiểm tra R1–R5 & đăng từng kỳ.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/matches"
+            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 transition hover:border-[var(--brand-purple)]"
+          >
+            <p className="text-sm font-extrabold">A5 · Quản lý trận</p>
+            <p className="mt-1 text-xs text-[var(--text-muted)]">
+              Lọc trận theo kỳ, đổi kỳ cho trận (kèm lý do) hoặc hủy trận.
+            </p>
+          </Link>
         </section>
       </main>
     </div>
