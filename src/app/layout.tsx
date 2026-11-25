@@ -44,8 +44,16 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className={`${beVietnamPro.className} min-h-screen antialiased`}>
-        {children}
+      <body
+        className={`${beVietnamPro.className} flex min-h-screen flex-col antialiased`}
+      >
+        <div className="flex-1">{children}</div>
+        <footer className="border-t border-[var(--border-subtle)]/60 bg-[var(--bg-page)] py-4 text-center text-xs text-[var(--text-muted)]">
+          Legend Chicks Cup 2026 ·{" "}
+          <span className="font-semibold text-[var(--text-main)]/80">
+            Design by Nam Gai
+          </span>
+        </footer>
       </body>
     </html>
   );
