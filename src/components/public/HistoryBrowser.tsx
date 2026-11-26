@@ -207,12 +207,30 @@ export function HistoryBrowser({
     return "font-semibold";
   };
 
-  const heatBg = (pct: number | null | undefined) => {
-    if (pct === null || pct === undefined) return "";
-    if (pct >= 80) return "bg-emerald-600/25 font-extrabold";
-    if (pct >= 60) return "bg-emerald-500/15 font-bold";
-    if (pct >= 40) return "bg-emerald-500/5";
-    return "text-red-600 dark:text-red-400";
+  const stockColor = (pct: number | null | undefined) => {
+    if (pct === null || pct === undefined) return "text-[var(--text-muted)]";
+    if (pct > 65) {
+      return "bg-fuchsia-500/15 font-extrabold text-fuchsia-600 dark:text-fuchsia-400";
+    }
+    if (pct >= 60) {
+      return "bg-emerald-500/15 font-bold text-emerald-600 dark:text-emerald-400";
+    }
+    if (pct >= 41) {
+      return "bg-amber-500/10 font-semibold text-amber-600 dark:text-amber-400";
+    }
+    if (pct >= 31) {
+      return "bg-red-500/15 font-bold text-red-600 dark:text-red-400";
+    }
+    return "bg-cyan-500/15 font-extrabold text-cyan-600 dark:text-cyan-400";
+  };
+
+  const candleBarColor = (pct: number | null | undefined) => {
+    if (pct === null || pct === undefined) return "bg-gray-500/20";
+    if (pct > 65) return "bg-fuchsia-500";
+    if (pct >= 60) return "bg-emerald-500";
+    if (pct >= 41) return "bg-amber-400";
+    if (pct >= 31) return "bg-red-500";
+    return "bg-cyan-400";
   };
 
   return (
@@ -255,17 +273,37 @@ export function HistoryBrowser({
 
       {viewMode === "cross" && (
         <div className="flex flex-col gap-5">
-          {/* Bảng 1: Phong độ bóng bàn qua 3 mùa */}
+          {/* Bảng 1: Phong độ bóng bàn qua 3 mùa (Phong cách bảng điện tử chứng khoán) */}
           <section className="overflow-x-auto rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4">
-            <h2 className="text-base font-extrabold text-[var(--brand-navy)] dark:text-[var(--brand-yellow)]">
-              PHONG ĐỘ BÓNG BÀN QUA 3 MÙA (MÙA 2 · MÙA 3 · MÙA 4)
-            </h2>
-            <p className="mt-0.5 mb-3 text-xs text-[var(--text-muted)]">
-              Xếp theo tỷ lệ thắng gộp · <code>—</code> = không có dữ liệu · Tỷ
-              lệ làm tròn đến % nguyên
-            </p>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h2 className="text-base font-extrabold text-[var(--brand-navy)] dark:text-[var(--brand-yellow)]">
+                  PHONG ĐỘ BÓNG BÀN QUA 3 MÙA (MÙA 2 · MÙA 3 · MÙA 4)
+                </h2>
+                <p className="mt-0.5 text-xs text-[var(--text-muted)]">
+                  Xếp theo tỷ lệ thắng gộp · <code>—</code> = không có dữ liệu
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-bold">
+                <span className="rounded-md bg-fuchsia-500/15 px-2 py-0.5 text-fuchsia-500 dark:text-fuchsia-400">
+                  &gt;65% Trần
+                </span>
+                <span className="rounded-md bg-emerald-500/15 px-2 py-0.5 text-emerald-600 dark:text-emerald-400">
+                  60–65% Tăng
+                </span>
+                <span className="rounded-md bg-amber-500/15 px-2 py-0.5 text-amber-600 dark:text-amber-400">
+                  41–59% Đi ngang
+                </span>
+                <span className="rounded-md bg-red-500/15 px-2 py-0.5 text-red-600 dark:text-red-400">
+                  31–40% Giảm
+                </span>
+                <span className="rounded-md bg-cyan-500/15 px-2 py-0.5 text-cyan-600 dark:text-cyan-400">
+                  ≤30% Sàn
+                </span>
+              </div>
+            </div>
 
-            <table className="w-full min-w-[920px] text-center text-xs">
+            <table className="mt-3 w-full min-w-[980px] text-center text-xs">
               <thead>
                 <tr className="bg-[var(--brand-navy)] text-white">
                   <th rowSpan={2} className="rounded-tl-lg px-2.5 py-2 text-left">
@@ -281,7 +319,7 @@ export function HistoryBrowser({
                     MÙA 4
                   </th>
                   <th
-                    colSpan={4}
+                    colSpan={5}
                     className="rounded-tr-lg border-l border-white/20 py-1.5"
                   >
                     TỔNG HỢP 3 MÙA
@@ -308,6 +346,7 @@ export function HistoryBrowser({
                   </th>
                   <th className="px-2 py-1.5">Đôi gộp</th>
                   <th className="px-2 py-1.5">Tổng gộp</th>
+                  <th className="px-2 py-1.5">Nến M2→M4</th>
                   <th className="px-2 py-1.5">Số lượt</th>
                 </tr>
               </thead>
@@ -315,6 +354,20 @@ export function HistoryBrowser({
                 {crossSeasonForm.map((r) => {
                   const cell = (val: number | null | undefined) =>
                     val === null || val === undefined ? "—" : `${val}%`;
+                  const series = [
+                    r.m2?.totalPct ?? null,
+                    r.m3?.totalPct ?? null,
+                    r.m4?.totalPct ?? null,
+                  ];
+                  const validSeries = series.filter(
+                    (x): x is number => x !== null
+                  );
+                  const delta =
+                    validSeries.length >= 2
+                      ? validSeries[validSeries.length - 1] -
+                        validSeries[validSeries.length - 2]
+                      : null;
+
                   return (
                     <tr
                       key={r.name}
@@ -323,41 +376,77 @@ export function HistoryBrowser({
                       <td className="px-2.5 py-2 text-left font-bold">
                         {r.name}
                       </td>
-                      <td className={`border-l border-[var(--border-subtle)]/50 px-2 py-2 ${heatBg(r.m2?.singlesPct)}`}>
+                      <td className={`border-l border-[var(--border-subtle)]/50 px-2 py-2 ${stockColor(r.m2?.singlesPct)}`}>
                         {cell(r.m2?.singlesPct)}
                       </td>
-                      <td className={`px-2 py-2 ${heatBg(r.m2?.doublesPct)}`}>
+                      <td className={`px-2 py-2 ${stockColor(r.m2?.doublesPct)}`}>
                         {cell(r.m2?.doublesPct)}
                       </td>
-                      <td className={`px-2 py-2 ${heatBg(r.m2?.totalPct)}`}>
+                      <td className={`px-2 py-2 ${stockColor(r.m2?.totalPct)}`}>
                         {cell(r.m2?.totalPct)}
                       </td>
-                      <td className={`border-l border-[var(--border-subtle)]/50 px-2 py-2 ${heatBg(r.m3?.singlesPct)}`}>
+                      <td className={`border-l border-[var(--border-subtle)]/50 px-2 py-2 ${stockColor(r.m3?.singlesPct)}`}>
                         {cell(r.m3?.singlesPct)}
                       </td>
-                      <td className={`px-2 py-2 ${heatBg(r.m3?.doublesPct)}`}>
+                      <td className={`px-2 py-2 ${stockColor(r.m3?.doublesPct)}`}>
                         {cell(r.m3?.doublesPct)}
                       </td>
-                      <td className={`px-2 py-2 ${heatBg(r.m3?.totalPct)}`}>
+                      <td className={`px-2 py-2 ${stockColor(r.m3?.totalPct)}`}>
                         {cell(r.m3?.totalPct)}
                       </td>
-                      <td className={`border-l border-[var(--border-subtle)]/50 px-2 py-2 ${heatBg(r.m4?.singlesPct)}`}>
+                      <td className={`border-l border-[var(--border-subtle)]/50 px-2 py-2 ${stockColor(r.m4?.singlesPct)}`}>
                         {cell(r.m4?.singlesPct)}
                       </td>
-                      <td className={`px-2 py-2 ${heatBg(r.m4?.doublesPct)}`}>
+                      <td className={`px-2 py-2 ${stockColor(r.m4?.doublesPct)}`}>
                         {cell(r.m4?.doublesPct)}
                       </td>
-                      <td className={`px-2 py-2 ${heatBg(r.m4?.totalPct)}`}>
+                      <td className={`px-2 py-2 ${stockColor(r.m4?.totalPct)}`}>
                         {cell(r.m4?.totalPct)}
                       </td>
-                      <td className="border-l border-[var(--border-subtle)]/50 px-2 py-2 font-semibold">
+                      <td className={`border-l border-[var(--border-subtle)]/50 px-2 py-2 ${stockColor(r.aggSinglesPct)}`}>
                         {cell(r.aggSinglesPct)}
                       </td>
-                      <td className="px-2 py-2 font-semibold">
+                      <td className={`px-2 py-2 ${stockColor(r.aggDoublesPct)}`}>
                         {cell(r.aggDoublesPct)}
                       </td>
-                      <td className="px-2 py-2 font-extrabold text-[var(--brand-purple)] dark:text-[var(--brand-yellow)]">
+                      <td className={`px-2 py-2 ${stockColor(r.aggTotalPct)}`}>
                         {r.aggTotalPct}%
+                      </td>
+                      <td className="px-2 py-1.5">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <div className="flex h-5 items-end gap-0.5">
+                            {series.map((v, i) => (
+                              <span
+                                key={i}
+                                title={`M${i + 2}: ${v !== null ? `${v}%` : "Không đấu"}`}
+                                className={`w-1.5 rounded-t-xs ${candleBarColor(v)}`}
+                                style={{
+                                  height:
+                                    v === null
+                                      ? "3px"
+                                      : `${Math.max(4, Math.round((v / 100) * 20))}px`,
+                                }}
+                              />
+                            ))}
+                          </div>
+                          {delta !== null ? (
+                            <span
+                              className={`text-[10px] font-bold ${
+                                delta > 0
+                                  ? "text-emerald-500"
+                                  : delta < 0
+                                    ? "text-red-500"
+                                    : "text-amber-400"
+                              }`}
+                            >
+                              {delta > 0 ? `▲+${delta}` : delta < 0 ? `▼${delta}` : "▬"}
+                            </span>
+                          ) : (
+                            <span className="text-[10px] text-[var(--text-muted)]">
+                              —
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-2 py-2 font-semibold">
                         {r.totalMatches}
